@@ -1,0 +1,8 @@
+# 项目排除路径
+/.idea/
+/out/
+/src/Test.java
+error.txt
+mips.txt
+output.txt
+testfile.txt
