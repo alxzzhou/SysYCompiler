@@ -14,9 +14,9 @@ import static cfg.CFGBuilder.OPTIMIZE;
 import static statics.assembly.AssemblyType.CREATE_POINTER;
 
 public class Function {
+    public int addr = 0;
     Map<String, Quadruple> define;
     Map<String, Set<Quadruple>> use;
-
     String tag;
     BasicBlock head, tail;
     HashMap<String, Integer>
@@ -24,8 +24,6 @@ public class Function {
             v2m = new HashMap<>(),
             a2m = new HashMap<>(),
             varWt = new HashMap<>();
-    int addr = 0;
-
     HashMap<Integer, Integer> r2m = new HashMap<>();
     int paramNum;
 
@@ -42,9 +40,9 @@ public class Function {
         OutputHandler.getInstance().writeln(tag + ":");
         addr += paramNum > 4 ? paramNum * 4 - 16 : 0;
         OutputHandler.getInstance().writeln("subi $sp, $sp, " + addr);
-        for (var vr : v2r.entrySet()) {
+        for (Map.Entry<Integer, Integer> vr : r2m.entrySet()) {
             OutputHandler.getInstance()
-                    .writeln("sw $" + vr.getKey() + ", $" + vr.getValue() + "($sp)");
+                    .writeln("sw $" + vr.getKey() + ", " + vr.getValue() + "($sp)");
         }
         for (BasicBlock b = head; b != null; b = b.next) {
             b.assemble(this);
@@ -71,7 +69,7 @@ public class Function {
                 }
             }
         }
-        for (var vr : v2r.entrySet()) {
+        for (Map.Entry<String, Integer> vr : v2r.entrySet()) {
             if (!r2m.containsKey(vr.getValue())) {
                 r2m.put(vr.getValue(), addr);
                 addr += 4;
@@ -82,8 +80,8 @@ public class Function {
     }
 
     public void calcVarWt() {
-        for (var b = head; b != null; b = b.next) {
-            for (var q = b.head; q != null; q = q.next) {
+        for (BasicBlock b = head; b != null; b = b.next) {
+            for (Quadruple q = b.head; q != null; q = q.next) {
                 String d = q.type == CREATE_POINTER ? null : q.getDefine();
                 if (d != null) {
                     varWt.put(d, 1);
@@ -112,7 +110,7 @@ public class Function {
     }
 
     public void addDef(Quadruple q) {
-        var n = q.getDefine();
+        String n = q.getDefine();
         if (n == null) {
             return;
         }
@@ -120,8 +118,8 @@ public class Function {
     }
 
     public void addUse(Quadruple q) {
-        var use = q.getUse();
-        for (var u : use) {
+        Set<String> use = q.getUse();
+        for (String u : use) {
             if (!this.use.containsKey(u)) {
                 this.use.put(u, new HashSet<>());
             }
@@ -130,7 +128,7 @@ public class Function {
     }
 
     public void _return() throws IOException {
-        for (var v : r2m.entrySet()) {
+        for (Map.Entry<Integer, Integer> v : r2m.entrySet()) {
             OutputHandler.getInstance().writeln("lw $" + v.getKey() + ", " + v.getValue() + "($sp)");
         }
         OutputHandler.getInstance().writeln("addi $sp, $sp, " + addr);

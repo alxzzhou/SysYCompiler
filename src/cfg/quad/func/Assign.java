@@ -51,11 +51,17 @@ public class Assign extends Quadruple {
         target = d;
     }
 
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(integer)) {
+            integer = t;
+        }
+    }
+
     public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        r.add(integer);
         return isNumberFormat(integer) ?
-                new HashSet<>() :
-                new HashSet<>() {{
-                    add(integer);
-                }};
+                new HashSet<>() : r;
     }
 }

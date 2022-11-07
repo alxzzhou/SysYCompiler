@@ -6,11 +6,11 @@ import statics.io.OutputHandler;
 
 import java.io.IOException;
 
-import static statics.assembly.AssemblyType.READ_INT;
+import static statics.assembly.AssemblyType.GET_INT;
 
 public class GetInt extends Quadruple {
     public GetInt() {
-        super(READ_INT);
+        super(GET_INT);
     }
 
     public void print() throws IOException {

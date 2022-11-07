@@ -77,7 +77,7 @@ public class OutputHandler {
             OUTPUT.write(s + "\n");
             OUTPUT.flush();
         }
-        if (PRINT_MIPS && s.charAt(0) != '<') {
+        if (PRINT_MIPS && (s.isEmpty() || s.charAt(0) != '<')) {
             MIPS.write(s + "\n");
             MIPS.flush();
         }

@@ -28,6 +28,9 @@ public abstract class Quadruple {
         return new HashSet<>();
     }
 
+    public void replaceUse(String o, String t) {
+    }
+
     public void print() throws IOException {
     }
 

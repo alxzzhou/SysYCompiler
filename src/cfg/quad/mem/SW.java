@@ -23,28 +23,44 @@ public class SW extends Quadruple {
     }
 
     public Set<String> getUse() {
-        return new HashSet<>() {{
-            add(integer);
-            add(offset);
-            add(pointer);
-        }};
+        HashSet<String> r = new HashSet<>();
+        r.add(offset);
+        r.add(integer);
+        r.add(pointer);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(offset)) {
+            offset = t;
+        }
+        if (o.equals(pointer)) {
+            pointer = t;
+        }
+        if (integer.equals(o)) {
+            integer = t;
+        }
     }
 
     public void assemble(Function f) throws IOException {
         String os = null;
         switch (pointer.charAt(0)) {
-            case 'v' -> {
+            case 'v': {
                 os = "la $27, " + pointer;
                 pointer = "$27";
+                break;
             }
-            case 'a' ->// ARRAY
+            case 'a':// ARRAY
             {
                 os = "addi $27, $sp, " + pointer.substring(5);
                 pointer = "$27";
+                break;
             }
-            case 's' -> {
+            case 's': {
                 os = "lw $27, " + pointer.substring(2) + "($sp)";
                 pointer = "$27";
+                break;
             }
         }
         OutputHandler.getInstance().writeln(os);

@@ -53,7 +53,7 @@ public class BasicBlock {
                          HashMap<String, Integer> v2m,
                          HashMap<String, Integer> a2m) {
         for (Quadruple q = tail; q != null; q = q.prev) {
-            var d = q.getDefine();
+            String d = q.getDefine();
             if (d != null) {
                 if (v2r.containsKey(d)) {
                     q.setDefine("$" + v2r.get(d));
@@ -63,29 +63,24 @@ public class BasicBlock {
                     q.setDefine("array" + a2m.get(d));
                 }
             }
-            var use = q.getUse();
-            Set<String> temp = new HashSet<>();
-            for (var u : use) {
+            Set<String> use = q.getUse();
+            for (String u : use) {
                 if (v2r.containsKey(u)) {
-                    temp.add("$" + v2r.get(u));
-                    use.remove(u);
+                    q.replaceUse(u, "$" + v2r.get(u));
                 } else if (v2m.containsKey(u)) {
-                    temp.add("sp" + v2m.get(u));
-                    use.remove(u);
+                    q.replaceUse(u, "sp" + v2m.get(u));
                 } else if (a2m.containsKey(u)) {
-                    temp.add("array" + a2m.get(u));
-                    use.remove(u);
+                    q.replaceUse(u, "array" + a2m.get(u));
                 }
             }
-            use.addAll(temp);
         }
     }
 
     public void calcOutVar() {
-        for (var v : varUse) {
+        for (String v : varUse) {
             if (!activeIn.contains(v) && !varDefine.contains(v)) {
                 activeIn.add(v);
-                for (var p : pred) {
+                for (BasicBlock p : pred) {
                     p.addOutVar(v);
                 }
             }
@@ -97,7 +92,7 @@ public class BasicBlock {
             activeOut.add(p);
             if (!activeIn.contains(p) && !varDefine.contains(p)) {
                 activeIn.add(p);
-                for (var pr : pred) {
+                for (BasicBlock pr : pred) {
                     pr.addOutVar(p);
                 }
             }

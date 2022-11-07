@@ -14,12 +14,17 @@ public class FetchInt extends Quadruple {
     String target;
 
     public FetchInt(String target) {
-        super(AssemblyType.GETINT);
+        super(AssemblyType.FETCH_INT);
         this.target = target;
     }
 
     public String getDefine() {
         return target;
+    }
+
+    @Override
+    public void setDefine(String d) {
+        target = d;
     }
 
     public void assemble(Function f) throws IOException {

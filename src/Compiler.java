@@ -13,7 +13,7 @@ public class Compiler {
         //lexer.printTokens();
         Parser parser = new Parser((new Tokens(lexer.tokens)));
         parser.compileUnit();
-        var root = parser.getBuilder().getRoot();
+        nodes.Node root = parser.getBuilder().getRoot();
         root.assemble(new AssemblyInfo(), new AssemblyRes());
     }
 }

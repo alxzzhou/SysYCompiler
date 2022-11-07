@@ -3,7 +3,7 @@ package parser;
 import lexer.Token;
 import nodes.ErrorNode;
 import nodes.Node;
-import nodes.TokenNode;
+import nodes.statement.TokenNode;
 import statics.exception.CompException;
 import statics.io.OutputHandler;
 import statics.setup.Pair;

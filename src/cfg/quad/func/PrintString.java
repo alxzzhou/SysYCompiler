@@ -6,6 +6,8 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PrintString extends Quadruple {
     public String s;
@@ -13,6 +15,20 @@ public class PrintString extends Quadruple {
     public PrintString(String s) {
         super(AssemblyType.PRINT_STR);
         this.s = s;
+    }
+
+    @Override
+    public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        r.add(s);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(s)) {
+            s = t;
+        }
     }
 
     @Override

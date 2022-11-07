@@ -12,9 +12,9 @@ import java.util.LinkedList;
 
 public abstract class Node {
     public SyntaxType type;
-    int startLine;
-    int finishLine;
-    LinkedList<Node> children;
+    public int startLine;
+    public int finishLine;
+    public LinkedList<Node> children;
 
     public Node() {
         children = new LinkedList<>();
@@ -49,7 +49,7 @@ public abstract class Node {
     }
 
     public void print() {
-        for (var node : children) {
+        for (Node node : children) {
         }
     }
 

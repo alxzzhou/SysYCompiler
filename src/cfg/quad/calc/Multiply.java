@@ -6,6 +6,8 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static cfg.quad.QuadUtil.isNumberFormat;
 import static cfg.quad.QuadUtil.isReg;
@@ -14,10 +16,32 @@ public class Multiply extends Quadruple {
     String target, v1, v2;
 
     public Multiply(String target, String v1, String v2) {
-        super(AssemblyType.PLUS_BIN);
+        super(AssemblyType.PLUS_ARITH);
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        if (!isNumberFormat(v1)) {
+            r.add(v1);
+        }
+        if (!isNumberFormat(v2)) {
+            r.add(v2);
+        }
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(v1)) {
+            v1 = t;
+        }
+        if (o.equals(v2)) {
+            v2 = t;
+        }
     }
 
     @Override
@@ -42,7 +66,7 @@ public class Multiply extends Quadruple {
         }
         if (v2.charAt(0) == 's') {
             OutputHandler.getInstance()
-                    .writeln("lw $28, " + v2 + "($sp)");
+                    .writeln("lw $28, " + v2.substring(2) + "($sp)");
             v2 = "$28";
         }
         if (isReg(target)) {

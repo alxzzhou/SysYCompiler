@@ -6,6 +6,8 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static cfg.quad.QuadUtil.isNumberFormat;
 import static cfg.quad.QuadUtil.isReg;
@@ -14,10 +16,32 @@ public class Mod extends Quadruple {
     String target, v1, v2;
 
     public Mod(String target, String v1, String v2) {
-        super(AssemblyType.MOD_BIN);
+        super(AssemblyType.MOD_ARITH);
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        if (!isNumberFormat(v1)) {
+            r.add(v1);
+        }
+        if (!isNumberFormat(v2)) {
+            r.add(v2);
+        }
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(v1)) {
+            v1 = t;
+        }
+        if (o.equals(v2)) {
+            v2 = t;
+        }
     }
 
     @Override

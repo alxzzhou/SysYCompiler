@@ -5,7 +5,6 @@ import cfg.quad.Quadruple;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
-import java.util.Set;
 
 import static statics.assembly.AssemblyType.CREATE_POINTER;
 
@@ -29,10 +28,6 @@ public class Pointer extends Quadruple {
         name = d;
     }
 
-    @Override
-    public Set<String> getUse() {
-        return null;
-    }
 
     @Override
     public void print() throws IOException {

@@ -40,8 +40,15 @@ public class TrueJump extends Quadruple {
 
     @Override
     public Set<String> getUse() {
-        return new HashSet<>() {{
-            add(val);
-        }};
+        HashSet<String> r = new HashSet<>();
+        r.add(val);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(val)) {
+            val = t;
+        }
     }
 }

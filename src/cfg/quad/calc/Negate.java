@@ -15,7 +15,7 @@ public class Negate extends Quadruple {
     String target, v;
 
     public Negate(String t, String v) {
-        super(AssemblyType.NEGATE_UNI);
+        super(AssemblyType.NEGATE_ARITH);
         this.target = t;
         this.v = v;
     }
@@ -44,9 +44,16 @@ public class Negate extends Quadruple {
     }
 
     @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(v)) {
+            v = t;
+        }
+    }
+
+    @Override
     public Set<String> getUse() {
-        return new HashSet<>() {{
-            add(v);
-        }};
+        HashSet<String> r = new HashSet<>();
+        r.add(v);
+        return r;
     }
 }

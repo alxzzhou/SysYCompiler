@@ -36,8 +36,15 @@ public class Return extends Quadruple {
     }
 
     public Set<String> getUse() {
-        return new HashSet<>() {{
-            add(res);
-        }};
+        HashSet<String> r = new HashSet<>();
+        r.add(res);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(res)) {
+            res = t;
+        }
     }
 }

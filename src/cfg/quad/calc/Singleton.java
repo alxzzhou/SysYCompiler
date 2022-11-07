@@ -5,6 +5,8 @@ import cfg.quad.Quadruple;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static cfg.quad.QuadUtil.isReg;
 import static statics.assembly.AssemblyType.SINGLETON;
@@ -26,6 +28,20 @@ public class Singleton extends Quadruple {
     @Override
     public void setDefine(String d) {
         target = d;
+    }
+
+    @Override
+    public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        r.add(val);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(val)) {
+            val = t;
+        }
     }
 
     @Override

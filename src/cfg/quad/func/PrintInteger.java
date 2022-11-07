@@ -6,6 +6,8 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static cfg.quad.QuadUtil.isReg;
 
@@ -15,6 +17,20 @@ public class PrintInteger extends Quadruple {
     public PrintInteger(String i) {
         super(AssemblyType.PRINT_INT);
         this.i = i;
+    }
+
+    @Override
+    public Set<String> getUse() {
+        HashSet<String> r = new HashSet<>();
+        r.add(i);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(i)) {
+            i = t;
+        }
     }
 
     @Override

@@ -38,7 +38,18 @@ public enum SyntaxType {
     FUNC_PARAM,
     FUNC_PARAMS,
     FUNC_DEF,
-    ADD_EXPR, MUL_EXPR, UNARY_EXPR, PRIMARY_EXPR, NUMBER, LVAL, CONST_DECL, CONST_DEF, CONST_INIT_VAL, LOR_EXPR, LAND_EXPR, EQ_EXPR, REL_EXPR;
+    ADD_EXPR,
+    MUL_EXPR,
+    UNARY_EXPR,
+    PRIMARY_EXPR,
+    NUMBER, LVAL,
+    CONST_DECL,
+    CONST_DEF,
+    CONST_INIT_VAL,
+    LOR_EXPR,
+    LAND_EXPR,
+    EQ_EXPR,
+    REL_EXPR, OMNI_EXPR;
 
 
     public static final HashMap<String, SyntaxType> KEYWORDS =

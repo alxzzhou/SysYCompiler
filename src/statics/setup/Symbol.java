@@ -100,15 +100,15 @@ public class Symbol {
     }
 
     public void printGlobalVars() throws IOException { // NO IR INCLUDED
-        for (var v : globalVars.entrySet()) {
+        for (java.util.Map.Entry<String, LValSymbol> v : globalVars.entrySet()) {
             OutputHandler.getInstance().write(v.getKey() + " ");
             v.getValue().print();
         }
-        for (var v : constVars.entrySet()) {
+        for (java.util.Map.Entry<String, LValSymbol> v : constVars.entrySet()) {
             OutputHandler.getInstance().write(v.getKey() + " ");
             v.getValue().print();
         }
-        for (var v : constStrings.entrySet()) {
+        for (java.util.Map.Entry<String, String> v : constStrings.entrySet()) {
             OutputHandler.getInstance()
                     .writeln(v.getKey() + ": .asciiz \"" + v.getValue() + "\"");
         }
@@ -142,7 +142,7 @@ public class Symbol {
         }
 
         public String getOffsetInMIPS(List<String> indices) {
-            var r = CFG_BUILDER.tempVar();
+            String r = CFG_BUILDER.tempVar();
             String b = CFG_BUILDER.tempVar();
             String t = "1";
             CFG_BUILDER.insert(new Assign(b, t));

@@ -34,7 +34,7 @@ public class CFGBuilder {
     }
 
     public void assemble() throws IOException {
-        for (var f : funcs) {
+        for (Function f : funcs) {
             f.assemble();
         }
     }
@@ -51,6 +51,6 @@ public class CFGBuilder {
 
     public String tempVar() {
         temp++;
-        return "TEMP_" + temp;
+        return "temp_" + temp;
     }
 }

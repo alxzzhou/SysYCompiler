@@ -1,41 +1,40 @@
 package parser;
 
 import lexer.Tokens;
-import nodes.AddExprNode;
-import nodes.AssignStatementNode;
-import nodes.BlockNode;
-import nodes.BreakNode;
-import nodes.CompUnitNode;
-import nodes.ConstDeclNode;
-import nodes.ConstDefNode;
-import nodes.ConstInitValNode;
-import nodes.ContinueNode;
-import nodes.EqExprNode;
-import nodes.ExprNode;
-import nodes.ExprStatementNode;
-import nodes.FuncArgsNode;
-import nodes.FuncDefNode;
-import nodes.FuncExprNode;
-import nodes.FuncParamNode;
-import nodes.FuncParamsNode;
-import nodes.FuncTypeNode;
-import nodes.IfNode;
-import nodes.InitValNode;
-import nodes.LAndExprNode;
-import nodes.LOrExprNode;
-import nodes.LValNode;
-import nodes.MulExprNode;
-import nodes.NumberNode;
-import nodes.PrimaryExprNode;
-import nodes.PrintfNode;
-import nodes.RelExprNode;
-import nodes.ReturnNode;
-import nodes.StatementNode;
-import nodes.UnaryExprNode;
-import nodes.UnaryPrefixOpNode;
-import nodes.VarDeclNode;
-import nodes.VarDefNode;
-import nodes.WhileNode;
+import nodes.expr.OmniExpr;
+import nodes.expr.EqExprNode;
+import nodes.expr.ExprNode;
+import nodes.expr.LAndExprNode;
+import nodes.expr.LOrExprNode;
+import nodes.expr.LValNode;
+import nodes.expr.NumberNode;
+import nodes.expr.PrimaryExprNode;
+import nodes.expr.RelExprNode;
+import nodes.expr.UnaryExprNode;
+import nodes.expr.UnaryPrefixOpNode;
+import nodes.func.FuncArgsNode;
+import nodes.func.FuncDefNode;
+import nodes.func.FuncExprNode;
+import nodes.func.FuncParamNode;
+import nodes.func.FuncParamsNode;
+import nodes.func.FuncTypeNode;
+import nodes.statement.AssignStatementNode;
+import nodes.statement.BlockNode;
+import nodes.statement.BreakNode;
+import nodes.statement.CompUnitNode;
+import nodes.statement.ContinueNode;
+import nodes.statement.ExprStatementNode;
+import nodes.statement.IfNode;
+import nodes.statement.PrintfNode;
+import nodes.statement.ReturnNode;
+import nodes.statement.StatementNode;
+import nodes.statement.WhileNode;
+import nodes.var.ConstDeclNode;
+import nodes.var.ConstDefNode;
+import nodes.var.ConstInitValNode;
+import nodes.var.InitValNode;
+import nodes.var.VarDeclNode;
+import nodes.var.VarDefNode;
 import statics.exception.CompException;
 import statics.io.OutputHandler;
 import statics.setup.SyntaxType;
@@ -167,7 +166,7 @@ public class Parser {
     }
 
     void constExpr() throws IOException {
-        addExpr();
+        expr();
         OutputHandler.getInstance().writeln("<ConstExp>");
     }
 
@@ -418,7 +417,7 @@ public class Parser {
 
     void relExpr() throws IOException {
         builder.initNode(REL_EXPR);
-        addExpr();
+        expr();
         relExpr_();
         builder.parseNode(new RelExprNode());
         OutputHandler.getInstance().writeln("<RelExp>");
@@ -430,7 +429,7 @@ public class Parser {
             OutputHandler.getInstance().writeln("<RelExp>");
             terminate();
             builder.initNode(REL_EXPR);
-            addExpr();
+            expr();
             relExpr_();
             builder.parseNode(new RelExprNode());
         }
@@ -448,48 +447,28 @@ public class Parser {
 
     void expr() throws IOException {
         builder.initNode(EXPR);
-        addExpr();
+        omniExpr(0);
         builder.parseNode(new ExprNode());
         OutputHandler.getInstance().writeln("<Exp>");
     }
 
-    void addExpr() throws IOException {
-        builder.initNode(ADD_EXPR);
-        mulExpr();
-        addExpr_();
-        builder.parseNode(new AddExprNode());
-        OutputHandler.getInstance().writeln("<AddExp>");
-    }
-
-    void addExpr_() throws IOException {
-        if (tokens.curToken().type == PLUS || tokens.curToken().type == MINU) {
-            OutputHandler.getInstance().writeln("<AddExp>");
-            terminate();
-            builder.initNode(ADD_EXPR);
-            mulExpr();
-            addExpr_();
-            builder.parseNode(new AddExprNode());
-        }
-    }
-
-    void mulExpr() throws IOException {
-        builder.initNode(MUL_EXPR);
+    void omniExpr(int cp) throws IOException {
+        int p = builder.getChildrenSize();
         unaryExpr();
-        mulExpr_();
-        builder.parseNode(new MulExprNode());
-        OutputHandler.getInstance().writeln("<MulExp>");
-    }
-
-    void mulExpr_() throws IOException {
         SyntaxType t = tokens.curToken().type;
-        if (t == MULT || t == DIV || t == MOD) {
-            OutputHandler.getInstance().writeln("<MulExp>");
-            terminate();
-            builder.initNode(MUL_EXPR);
-            unaryExpr();
-            mulExpr_();
-            builder.parseNode(new MulExprNode());
+        while (OPERAND_PRIORITY.containsKey(t)) {
+            int pri = OPERAND_PRIORITY.get(t);
+            if (pri > cp) {
+                builder.initNodeAt(OMNI_EXPR, p);
+                terminate();
+                omniExpr(pri);
+                builder.parseNode(new OmniExpr());
+            } else {
+                break;
+            }
+            t = tokens.curToken().type;
         }
+        OutputHandler.getInstance().writeln("<AddExp>");
     }
 
     void unaryExpr() throws IOException {
@@ -510,7 +489,7 @@ public class Parser {
 
     private void unaryPrefixOp() throws IOException {
         builder.initNode(PREFIX_OP);
-        var t = tokens.curToken().type;
+        SyntaxType t = tokens.curToken().type;
         while (t == NOT || t == PLUS || t == MINU) {
             unaryOp();
             t = tokens.curToken().type;

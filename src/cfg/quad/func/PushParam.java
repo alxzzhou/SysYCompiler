@@ -19,13 +19,21 @@ public class PushParam extends Quadruple {
         this.n = n;
     }
 
+    public String getDefine() {
+        return param;
+    }
+
+    public void setDefine(String d) {
+        param = d;
+    }
+
     @Override
     public void assemble(Function f) throws IOException {
         if (n < 4) {
             if (isReg(param)) {
                 OutputHandler.getInstance().writeln("move $a" + n + ", " + param);
             } else if (param.charAt(0) == 's') {
-                OutputHandler.getInstance().writeln("$lw $a" + n + ", " + param.substring(2) + "($sp)");
+                OutputHandler.getInstance().writeln("lw $a" + n + ", " + param.substring(2) + "($sp)");
             } else if (param.charAt(0) == 'a') {
                 OutputHandler.getInstance().writeln("addi $a" + n + ", $sp, " + param.substring(5));
             } else {
@@ -35,7 +43,7 @@ public class PushParam extends Quadruple {
             if (isReg(param)) {
                 OutputHandler.getInstance().writeln("sw " + param + ", " + (-(n - 3) * 4) + "($sp)");
             } else if (param.charAt(0) == 's') {
-                OutputHandler.getInstance().writeln("$lw $27, " + param.substring(2) + "($sp)");
+                OutputHandler.getInstance().writeln("lw $27, " + param.substring(2) + "($sp)");
             } else if (param.charAt(0) == 'a') {
                 OutputHandler.getInstance().writeln("addi $27, $sp, " + param.substring(5));
             } else {

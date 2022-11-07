@@ -1,11 +1,11 @@
 package statics.assembly;
 
 import cfg.BasicBlock;
-import nodes.ExprNode;
+import nodes.expr.LOrExprNode;
 
 public class AssemblyInfo {
     public String res;
-    public ExprNode cond;
+    public LOrExprNode cond;
     public BasicBlock continueBlock, breakBlock, condFinalBlock;
     public boolean isConst = false;
     public boolean isLVal = false;

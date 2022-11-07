@@ -25,17 +25,20 @@ public class LP extends Quadruple {
     @Override
     public void assemble(Function f) throws IOException {
         switch (addr.charAt(0)) {
-            case 'a' -> {
+            case 'a': {
                 OutputHandler.getInstance().writeln("addi $27, $sp, " + addr.substring(5));
                 addr = "$27";
+                break;
             }
-            case 'v' -> {
+            case 'v': {
                 OutputHandler.getInstance().writeln("la $27, " + addr);
                 addr = "$27";
+                break;
             }
-            case 's' -> {
+            case 's': {
                 OutputHandler.getInstance().writeln("lw $27, " + addr.substring(2) + "($sp)");
                 addr = "$27";
+                break;
             }
         }
         if (isNumberFormat(ofs)) {
@@ -67,9 +70,19 @@ public class LP extends Quadruple {
 
     @Override
     public Set<String> getUse() {
-        return new HashSet<>() {{
-            add(ofs);
-            add(addr);
-        }};
+        HashSet<String> r = new HashSet<>();
+        r.add(ofs);
+        r.add(addr);
+        return r;
+    }
+
+    @Override
+    public void replaceUse(String o, String t) {
+        if (o.equals(ofs)) {
+            ofs = t;
+        }
+        if (o.equals(addr)) {
+            addr = t;
+        }
     }
 }
