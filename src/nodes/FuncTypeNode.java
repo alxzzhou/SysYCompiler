@@ -1,8 +1,8 @@
 package nodes;
 
-import statics.setup.SyntaxType;
 import statics.exception.ExcCheckInfo;
 import statics.exception.ExcCheckRes;
+import statics.setup.SyntaxType;
 
 public class FuncTypeNode extends Node {
     @Override

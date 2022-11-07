@@ -39,6 +39,7 @@ public class CompException {
         this.code = e;
         this.line = line;
     }
+
     public enum Exception {
         a(INVALID_CHAR),
         b(MULTIPLE_DEFINITION),

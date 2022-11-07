@@ -1,0 +1,43 @@
+package cfg.quad.func;
+
+import cfg.Function;
+import cfg.quad.Quadruple;
+import statics.io.OutputHandler;
+
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import static cfg.quad.QuadUtil.isReg;
+import static statics.assembly.AssemblyType.RETURN;
+
+public class Return extends Quadruple {
+    String res;
+
+    public Return(String r) {
+        super(RETURN);
+        this.res = r;
+    }
+
+    @Override
+    public void assemble(Function f) throws IOException {
+        if (res.equals("") || res.equals("-")) {
+            f._return();
+            return;
+        }
+        if (isReg(res)) {
+            OutputHandler.getInstance().writeln("move $v0, " + res);
+        } else if (res.charAt(0) == 's') {
+            OutputHandler.getInstance().writeln("lw $v0, " + res.substring(2) + "($sp)");
+        } else {
+            OutputHandler.getInstance().writeln("li $v0, " + res);
+        }
+        f._return();
+    }
+
+    public Set<String> getUse() {
+        return new HashSet<>() {{
+            add(res);
+        }};
+    }
+}

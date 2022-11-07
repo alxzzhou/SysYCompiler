@@ -1,7 +1,7 @@
 package cfg;
 
-import cfg.quad.Pointer;
 import cfg.quad.Quadruple;
+import cfg.quad.mem.Pointer;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
@@ -38,9 +38,9 @@ public class Function {
         for (BasicBlock b = head; b != null; b = b.next) {
             b.aliasify(v2r, v2m, a2m);
         }
-        // TODO: DECOMPOSE PHI
+        // TODO:
         OutputHandler.getInstance().writeln(tag + ":");
-        addr += paramNum > 4 ? paramNum * 4 - 16 : 0;// TODO: IS IT NECESSARY?
+        addr += paramNum > 4 ? paramNum * 4 - 16 : 0;
         OutputHandler.getInstance().writeln("subi $sp, $sp, " + addr);
         for (var vr : v2r.entrySet()) {
             OutputHandler.getInstance()
@@ -127,5 +127,13 @@ public class Function {
             }
             this.use.get(u).add(q);
         }
+    }
+
+    public void _return() throws IOException {
+        for (var v : r2m.entrySet()) {
+            OutputHandler.getInstance().writeln("lw $" + v.getKey() + ", " + v.getValue() + "($sp)");
+        }
+        OutputHandler.getInstance().writeln("addi $sp, $sp, " + addr);
+        OutputHandler.getInstance().writeln("jr $31");
     }
 }

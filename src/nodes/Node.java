@@ -53,7 +53,9 @@ public abstract class Node {
         }
     }
 
-    public void check(ExcCheckInfo info, ExcCheckRes res){}
+    public void check(ExcCheckInfo info, ExcCheckRes res) {
+    }
 
-    public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {}
+    public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
+    }
 }

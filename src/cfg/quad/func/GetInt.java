@@ -1,6 +1,7 @@
-package cfg.quad;
+package cfg.quad.func;
 
 import cfg.Function;
+import cfg.quad.Quadruple;
 import statics.io.OutputHandler;
 
 import java.io.IOException;

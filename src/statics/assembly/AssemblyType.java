@@ -16,7 +16,10 @@ public enum AssemblyType {
     JUMP_FALSE,
     JUMP,
 
+    SINGLETON,
     EQ_BIN,
+    OR_BIN,
+    AND_BIN,
     NEQ_BIN,
     GE_BIN,
     GT_BIN,

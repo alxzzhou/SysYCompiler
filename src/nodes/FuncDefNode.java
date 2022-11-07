@@ -1,8 +1,8 @@
 package nodes;
 
 import cfg.Function;
-import cfg.quad.LoadFuncParam;
-import cfg.quad.Return;
+import cfg.quad.func.LoadFuncParam;
+import cfg.quad.func.Return;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
 import statics.exception.CompException;

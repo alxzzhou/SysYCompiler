@@ -1,6 +1,5 @@
 package cfg;
 
-import cfg.quad.PhiFunc;
 import cfg.quad.Quadruple;
 import statics.io.OutputHandler;
 
@@ -15,22 +14,22 @@ import static statics.assembly.AssemblyType.CREATE_POINTER;
 import static statics.assembly.AssemblyType.PHI;
 
 public class BasicBlock {
-    String tag;
+    public String tag;
     public Quadruple head, tail;
     public HashSet<BasicBlock>
             pred = new HashSet<>(),
             succ = new HashSet<>(),
             dominator = new HashSet<>();
+    public BasicBlock next, prev;
     List<BasicBlock> domChildren = new ArrayList<>();
     BasicBlock nearestDominator;
-    HashMap<String, PhiFunc> phiNode = new HashMap<>();
+    //HashMap<String, PhiFunc> phiNode = new HashMap<>();
     HashSet<String>
             activeIn = new HashSet<>(),
             activeOut = new HashSet<>(),
             varDefine = new HashSet<>(),
             varUse = new HashSet<>();
     int domSize = 0, dfsn = 0;
-    public BasicBlock next, prev;
 
     public BasicBlock(int id) {
         tag = "LABEL_" + id;
@@ -43,8 +42,9 @@ public class BasicBlock {
     public void assemble(Function f) throws IOException {
         OutputHandler.getInstance().writeln(tag + ":");
         for (Quadruple q = head; q != null; q = q.next) {
-            OutputHandler.getInstance().write("# ");
-            q.print();
+            //System.out.println(q.type);
+            //OutputHandler.getInstance().write("# ");
+            //q.print();
             q.assemble(f);
         }
     }

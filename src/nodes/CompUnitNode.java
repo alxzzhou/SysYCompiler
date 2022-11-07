@@ -34,6 +34,7 @@ public class CompUnitNode extends Node {
                         li $v0, 10
                         syscall"""
         );
+        CFG_BUILDER.assemble();
         SYMBOL.finishBlock();
     }
 

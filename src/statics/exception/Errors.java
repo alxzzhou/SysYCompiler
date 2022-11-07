@@ -1,7 +1,5 @@
 package statics.exception;
 
-import statics.exception.CompException;
-
 import java.util.LinkedList;
 import java.util.List;
 

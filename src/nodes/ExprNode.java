@@ -9,10 +9,12 @@ import java.io.IOException;
 
 public class ExprNode extends Node {
     String res;
+
     public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
-        children.getFirst().assemble(info,res);
+        children.getFirst().assemble(info, res);
         this.res = res.res;
     }
+
     @Override
     public void check(ExcCheckInfo info, ExcCheckRes res) {
         for (Node node : children) {

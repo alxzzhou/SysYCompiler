@@ -1,5 +1,8 @@
 package cfg.quad;
 
+import statics.io.OutputHandler;
+
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -7,15 +10,15 @@ public class QuadUtil {
     public static int str_index = 0;
 
     public static String genIRVar(String name, int id) {
-        return "V_" + name + "_" + id;
+        return "var_" + name + "_" + id;
     }
 
     public static String genIRStr() {
-        return "S_" + str_index++;
+        return "str_" + str_index++;
     }
 
     public static String genIRFunc(String name) {
-        return "F_" + name;
+        return "func_" + name;
     }
 
     public static boolean isHex(String s) {
@@ -40,9 +43,19 @@ public class QuadUtil {
     }
 
     public static boolean isNumberFormat(String s) {
-        Pattern pattern = Pattern.compile("[+-]*\\d+");
+        Pattern pattern = Pattern.compile("^[+-]*\\d+$");
         Matcher matcher = pattern.matcher(s);
         return matcher.find();
+    }
+
+    public static void li(String reg, String i) throws IOException {
+        if (Math.abs(Integer.parseInt(i)) < 32768) {
+            OutputHandler.getInstance()
+                    .writeln("addi " + reg + ", $0, " + i);
+        } else {
+            OutputHandler.getInstance()
+                    .writeln("li " + reg + ", " + i);
+        }
     }
 
 }

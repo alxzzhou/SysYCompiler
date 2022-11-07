@@ -1,9 +1,9 @@
 package nodes;
 
-import cfg.quad.Assign;
-import cfg.quad.FetchInt;
-import cfg.quad.GetInt;
-import cfg.quad.SW;
+import cfg.quad.func.Assign;
+import cfg.quad.func.FetchInt;
+import cfg.quad.func.GetInt;
+import cfg.quad.mem.SW;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
 import statics.exception.ExcCheckInfo;

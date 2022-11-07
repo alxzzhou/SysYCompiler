@@ -1,6 +1,7 @@
-package cfg.quad;
+package cfg.quad.func;
 
 import cfg.Function;
+import cfg.quad.Quadruple;
 import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
@@ -44,6 +45,10 @@ public class Assign extends Quadruple {
 
     public String getDefine() {
         return target;
+    }
+
+    public void setDefine(String d) {
+        target = d;
     }
 
     public Set<String> getUse() {

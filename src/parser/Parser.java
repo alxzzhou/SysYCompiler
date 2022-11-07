@@ -1,6 +1,5 @@
 package parser;
 
-import statics.exception.CompException;
 import lexer.Tokens;
 import nodes.AddExprNode;
 import nodes.AssignStatementNode;
@@ -33,9 +32,11 @@ import nodes.RelExprNode;
 import nodes.ReturnNode;
 import nodes.StatementNode;
 import nodes.UnaryExprNode;
+import nodes.UnaryPrefixOpNode;
 import nodes.VarDeclNode;
 import nodes.VarDefNode;
 import nodes.WhileNode;
+import statics.exception.CompException;
 import statics.io.OutputHandler;
 import statics.setup.SyntaxType;
 
@@ -51,13 +52,13 @@ public class Parser {
     private final Tokens tokens;
     private final TreeBuilder builder;
 
-    public TreeBuilder getBuilder() {
-        return builder;
-    }
-
     public Parser(Tokens t) {
         tokens = t;
         builder = new TreeBuilder();
+    }
+
+    public TreeBuilder getBuilder() {
+        return builder;
     }
 
     void next() throws IOException {
@@ -65,15 +66,16 @@ public class Parser {
         tokens.bump();
     }
 
-    void check(SyntaxType t, CompException.Exception e) {
+    void check(SyntaxType t, CompException.Exception e) throws IOException {
         if (tokens.curToken().type != t) {
             error(e);
         }
         terminate();
     }
 
-    void terminate() {
+    void terminate() throws IOException {
         builder.terminate(tokens.curToken());
+        //OutputHandler.getInstance().writeln(tokens.curToken());
         tokens.bump();
     }
 
@@ -368,8 +370,8 @@ public class Parser {
     void lOrExpr_() throws IOException {
         if (tokens.curToken().type == OR) {
             OutputHandler.getInstance().writeln("<LOrExp>");
-            builder.initNode(LOR_EXPR);
             terminate();
+            builder.initNode(LOR_EXPR);
             lAndExpr();
             lOrExpr_();
             builder.parseNode(new LOrExprNode());
@@ -387,8 +389,8 @@ public class Parser {
     void lAndExpr_() throws IOException {
         if (tokens.curToken().type == AND) {
             OutputHandler.getInstance().writeln("<LAndExp>");
-            builder.initNode(LAND_EXPR);
             terminate();
+            builder.initNode(LAND_EXPR);
             eqExpr();
             lAndExpr_();
             builder.parseNode(new LAndExprNode());
@@ -406,8 +408,8 @@ public class Parser {
     void eqExpr_() throws IOException {
         if (tokens.curToken().type == EQL || tokens.curToken().type == NEQ) {
             OutputHandler.getInstance().writeln("<EqExp>");
-            builder.initNode(EQ_EXPR);
             terminate();
+            builder.initNode(EQ_EXPR);
             relExpr();
             eqExpr_();
             builder.parseNode(new EqExprNode());
@@ -426,8 +428,8 @@ public class Parser {
         SyntaxType t = tokens.curToken().type;
         if (t == GRE || t == GEQ || t == LSS || t == LEQ) {
             OutputHandler.getInstance().writeln("<RelExp>");
-            builder.initNode(REL_EXPR);
             terminate();
+            builder.initNode(REL_EXPR);
             addExpr();
             relExpr_();
             builder.parseNode(new RelExprNode());
@@ -462,8 +464,8 @@ public class Parser {
     void addExpr_() throws IOException {
         if (tokens.curToken().type == PLUS || tokens.curToken().type == MINU) {
             OutputHandler.getInstance().writeln("<AddExp>");
-            builder.initNode(ADD_EXPR);
             terminate();
+            builder.initNode(ADD_EXPR);
             mulExpr();
             addExpr_();
             builder.parseNode(new AddExprNode());
@@ -482,8 +484,8 @@ public class Parser {
         SyntaxType t = tokens.curToken().type;
         if (t == MULT || t == DIV || t == MOD) {
             OutputHandler.getInstance().writeln("<MulExp>");
-            builder.initNode(MUL_EXPR);
             terminate();
+            builder.initNode(MUL_EXPR);
             unaryExpr();
             mulExpr_();
             builder.parseNode(new MulExprNode());
@@ -494,8 +496,7 @@ public class Parser {
         SyntaxType t = tokens.curToken().type;
         builder.initNode(UNARY_EXPR);
         if (t == NOT || t == PLUS || t == MINU) {
-            unaryOp();
-            unaryExpr();
+            unaryPrefixOp();
         }
         t = tokens.curToken().type;
         if (t == IDENFR && tokens.nextNToken(1).type == LPARENT) {
@@ -505,6 +506,16 @@ public class Parser {
         }
         builder.parseNode(new UnaryExprNode());
         OutputHandler.getInstance().writeln("<UnaryExp>");
+    }
+
+    private void unaryPrefixOp() throws IOException {
+        builder.initNode(PREFIX_OP);
+        var t = tokens.curToken().type;
+        while (t == NOT || t == PLUS || t == MINU) {
+            unaryOp();
+            t = tokens.curToken().type;
+        }
+        builder.parseNode(new UnaryPrefixOpNode());
     }
 
     void unaryOp() throws IOException {

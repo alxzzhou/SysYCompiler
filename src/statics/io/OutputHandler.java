@@ -11,18 +11,16 @@ import static statics.io.OutputHandler.IOConfig.PARSER;
 import static statics.io.OutputHandler.IOConfig.TOKEN;
 
 public class OutputHandler {
-    public enum IOConfig {
-        MIPS, ERROR, TOKEN, PARSER
-    }
-
     public static final IOConfig CONFIG = IOConfig.MIPS;
     public static final boolean PRINT_TOKEN = CONFIG == TOKEN;
     public static final boolean PRINT_PARSER = CONFIG == PARSER;
     public static final boolean PRINT_ERROR = CONFIG == IOConfig.ERROR;
     public static final boolean PRINT_MIPS = CONFIG == IOConfig.MIPS;
     public static final boolean DEBUG = false;
-
     private static final OutputHandler INSTANCE;
+    private static final BufferedWriter OUTPUT;
+    private static final BufferedWriter MIPS;
+    private static final BufferedWriter ERROR;
 
     static {
         try {
@@ -32,8 +30,6 @@ public class OutputHandler {
         }
     }
 
-    private static final BufferedWriter OUTPUT;
-
     static {
         try {
             OUTPUT = new BufferedWriter(new FileWriter("output.txt"));
@@ -42,8 +38,6 @@ public class OutputHandler {
         }
     }
 
-    private static final BufferedWriter MIPS;
-
     static {
         try {
             MIPS = new BufferedWriter(new FileWriter("mips.txt"));
@@ -51,8 +45,6 @@ public class OutputHandler {
             throw new RuntimeException(e);
         }
     }
-
-    private static final BufferedWriter ERROR;
 
     static {
         try {
@@ -85,7 +77,7 @@ public class OutputHandler {
             OUTPUT.write(s + "\n");
             OUTPUT.flush();
         }
-        if (PRINT_MIPS) {
+        if (PRINT_MIPS && s.charAt(0) != '<') {
             MIPS.write(s + "\n");
             MIPS.flush();
         }
@@ -109,5 +101,9 @@ public class OutputHandler {
         if (DEBUG) {
             System.out.println(s);
         }
+    }
+
+    public enum IOConfig {
+        MIPS, ERROR, TOKEN, PARSER
     }
 }

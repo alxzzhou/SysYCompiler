@@ -15,6 +15,7 @@ public class ConstDeclNode extends Node {
         }
         info.isConst = false;
     }
+
     @Override
     public void check(ExcCheckInfo info, ExcCheckRes res) {
         info.isConst = true;

@@ -2,6 +2,7 @@ package cfg;
 
 import cfg.quad.Quadruple;
 
+import java.io.IOException;
 import java.util.HashSet;
 
 public class CFGBuilder {
@@ -9,10 +10,9 @@ public class CFGBuilder {
 
     public static final CFGBuilder CFG_BUILDER =
             new CFGBuilder();
-
+    public BasicBlock cbb;
     HashSet<Function> funcs = new HashSet<>();
     Function cf;
-    public BasicBlock cbb;
     int bbcnt = 0, temp = 0;
 
     public CFGBuilder() {
@@ -30,6 +30,12 @@ public class CFGBuilder {
         if (cbb != b) {
             cbb = b;
             cf.addBasicBlock(b);
+        }
+    }
+
+    public void assemble() throws IOException {
+        for (var f : funcs) {
+            f.assemble();
         }
     }
 

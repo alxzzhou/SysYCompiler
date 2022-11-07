@@ -1,12 +1,12 @@
 package parser;
 
-import statics.setup.Pair;
-import statics.exception.CompException;
 import lexer.Token;
 import nodes.ErrorNode;
 import nodes.Node;
 import nodes.TokenNode;
+import statics.exception.CompException;
 import statics.io.OutputHandler;
+import statics.setup.Pair;
 import statics.setup.SyntaxType;
 
 import java.io.IOException;

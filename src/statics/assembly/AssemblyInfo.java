@@ -6,7 +6,7 @@ import nodes.ExprNode;
 public class AssemblyInfo {
     public String res;
     public ExprNode cond;
-    public BasicBlock continueBlock, breakBlock, elseBlock;
+    public BasicBlock continueBlock, breakBlock, condFinalBlock;
     public boolean isConst = false;
     public boolean isLVal = false;
     public boolean isGlobal = false;

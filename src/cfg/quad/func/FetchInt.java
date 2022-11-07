@@ -1,6 +1,7 @@
-package cfg.quad;
+package cfg.quad.func;
 
 import cfg.Function;
+import cfg.quad.Quadruple;
 import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
@@ -15,6 +16,10 @@ public class FetchInt extends Quadruple {
     public FetchInt(String target) {
         super(AssemblyType.GETINT);
         this.target = target;
+    }
+
+    public String getDefine() {
+        return target;
     }
 
     public void assemble(Function f) throws IOException {

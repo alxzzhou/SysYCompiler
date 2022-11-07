@@ -1,5 +1,8 @@
 package statics.setup;
 
+import cfg.quad.calc.Multiply;
+import cfg.quad.calc.Plus;
+import cfg.quad.func.Assign;
 import statics.exception.CompException;
 import statics.io.OutputHandler;
 
@@ -10,7 +13,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
-import static cfg.quad.QuadUtil.genIRStr;
+import static cfg.CFGBuilder.CFG_BUILDER;
 import static cfg.quad.QuadUtil.genIRVar;
 
 public class Symbol {
@@ -115,8 +118,12 @@ public class Symbol {
         return symbolStack.size();
     }
 
-    public void addConstString(String str) {
-        constStrings.put(genIRStr(), str);
+//    public void addConstString(String str) {
+//        constStrings.put(genIRStr(), str);
+//    }
+
+    public void addConstString(String l, String str) {
+        constStrings.put(l, str);
     }
 
     public static class LValSymbol {
@@ -132,6 +139,27 @@ public class Symbol {
             this.id = id;
             this.dims = dims;
             this.initVals = initVals;
+        }
+
+        public String getOffsetInMIPS(List<String> indices) {
+            var r = CFG_BUILDER.tempVar();
+            String b = CFG_BUILDER.tempVar();
+            String t = "1";
+            CFG_BUILDER.insert(new Assign(b, t));
+            for (int i = dims.size() - 1; i >= indices.size(); i--) {
+                t = dims.get(i).toString();
+                CFG_BUILDER.insert(new Multiply(b, b, t));
+            }
+            t = "0";
+            CFG_BUILDER.insert(new Assign(r, t));
+            for (int i = indices.size() - 1; i >= 0; i--) {
+                t = CFG_BUILDER.tempVar();
+                CFG_BUILDER.insert(new Multiply(t, indices.get(i), b));
+                CFG_BUILDER.insert(new Plus(r, r, t));
+                t = dims.get(i).toString();
+                CFG_BUILDER.insert(new Multiply(b, b, t));
+            }
+            return r;
         }
 
         private int getOffset(List<Integer> indices) {
