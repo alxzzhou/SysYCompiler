@@ -16,20 +16,22 @@ import java.util.Objects;
 
 import static cfg.CFGBuilder.CFG_BUILDER;
 import static cfg.quad.QuadUtil.genIRStr;
+import static statics.exception.CompException.ExcDesc.INVALID_CHAR;
 import static statics.exception.CompException.ExcDesc.UNMATCHED_PRINT_PARAMS;
 import static statics.exception.Errors.errors;
 import static statics.setup.Symbol.SYMBOL;
 import static statics.setup.SyntaxType.EXPR;
 import static statics.setup.SyntaxType.STRCON;
-import static statics.setup.SyntaxType.UNARY_EXPR;
 
 public class PrintfNode extends Node {
+    int cnt = 0;
+
     @Override
     public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
         List<String> args = new ArrayList<>();
         String fs = null;
         for (Node node : children) {
-            if (node.type == EXPR ) {
+            if (node.type == EXPR) {
                 node.assemble(info, res);
                 args.add(res.res);
             } else if (node.type == STRCON) {
@@ -64,7 +66,8 @@ public class PrintfNode extends Node {
 
     @Override
     public void check(ExcCheckInfo info, ExcCheckRes res) {
-        int cnt = 0, line = 0;
+        int line = 0;
+        cnt = 0;
         String formatStr = null;
         for (Node node : children) {
             node.check(info, res);
@@ -75,8 +78,35 @@ public class PrintfNode extends Node {
                 line = node.finishLine;
             }
         }
-        if (cnt != 0) {
-            errors.add(new CompException(UNMATCHED_PRINT_PARAMS.toCode(), line));
+
+        assert formatStr != null;
+        if (fsError(formatStr)) {
+            errors.add(new CompException(INVALID_CHAR.toCode(), line));
         }
+        if (cnt != 0) {
+            errors.add(new CompException(UNMATCHED_PRINT_PARAMS.toCode(), this.startLine));
+        }
+    }
+
+    private boolean fsError(String fs) {
+        int len = fs.length();
+        boolean ret = false;
+        if (fs.charAt(len - 2) == '\\') {
+            return true;
+        }
+        for (int i = 1; i < len - 1; i++) {
+            char c = fs.charAt(i), l = fs.charAt(i - 1);
+            if (c != 32 && c != 33 && c != '%' && (c < 40 || c > 126)) {
+                ret = true;
+            } else if (l == '\\' && c != 'n') {
+                ret = true;
+            } else if (l == '%' && c != 'd') {
+                ret = true;
+            }
+            if (l == '%' && c == 'd') {
+                cnt--;
+            }
+        }
+        return ret;
     }
 }

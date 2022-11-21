@@ -11,7 +11,9 @@ import java.io.IOException;
 public class ExprStatementNode extends Node {
     @Override
     public void check(ExcCheckInfo info, ExcCheckRes res) {
-
+        for (Node node : children) {
+            node.check(info, res);
+        }
     }
 
     public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {

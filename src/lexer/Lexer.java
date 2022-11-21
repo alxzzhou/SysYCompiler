@@ -165,23 +165,10 @@ public class Lexer {
                     }
                     break;
                 case '\\':
-                    if (cursor.nextNthChar(1) != 'n') {
-                        errors.add(new CompException(CompException.Exception.a, cursor.getLine()));
-                    }
                     cursor.move();
                     afterBackSlash = !afterBackSlash;
                     break;
-                case '%':
-                    if (cursor.nextNthChar(1) != 'd') {
-                        errors.add(new CompException(CompException.Exception.a, cursor.getLine()));
-                    }
-                    cursor.move();
-                    break;
                 default:
-                    int cint = c;
-                    if (!(cint == 32 || cint == 33 || (cint >= 40 && cint <= 126))) {
-                        errors.add(new CompException(CompException.Exception.a, cursor.getLine()));
-                    }
                     cursor.move();
                     afterBackSlash = false;
             }

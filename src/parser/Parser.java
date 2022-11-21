@@ -1,13 +1,13 @@
 package parser;
 
 import lexer.Tokens;
-import nodes.expr.OmniExpr;
 import nodes.expr.EqExprNode;
 import nodes.expr.ExprNode;
 import nodes.expr.LAndExprNode;
 import nodes.expr.LOrExprNode;
 import nodes.expr.LValNode;
 import nodes.expr.NumberNode;
+import nodes.expr.OmniExpr;
 import nodes.expr.PrimaryExprNode;
 import nodes.expr.RelExprNode;
 import nodes.expr.UnaryExprNode;
@@ -68,8 +68,9 @@ public class Parser {
     void check(SyntaxType t, CompException.Exception e) throws IOException {
         if (tokens.curToken().type != t) {
             error(e);
+        } else {
+            terminate();
         }
-        terminate();
     }
 
     void terminate() throws IOException {
@@ -233,7 +234,7 @@ public class Parser {
             int p = builder.getChildrenSize();
             int i = 1;
             boolean lval = false;
-            while (tokens.nextNToken(i).type != SEMICN && i <= 3) {
+            while (tokens.nextNToken(i).type != SEMICN) {
                 if (tokens.nextNToken(i).type == ASSIGN) {
                     lval = true;
                     break;
@@ -555,8 +556,7 @@ public class Parser {
         } else if (tokens.curToken().type == RPARENT) {
             terminate();
         } else {
-            error(UNDEFINED.toCode());
-            return;
+            check(RPARENT, LACK_PARENT.toCode());
         }
         builder.parseNode(new FuncExprNode());
     }

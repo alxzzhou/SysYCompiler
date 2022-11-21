@@ -42,9 +42,6 @@ public class BasicBlock {
     public void assemble(Function f) throws IOException {
         OutputHandler.getInstance().writeln(tag + ":");
         for (Quadruple q = head; q != null; q = q.next) {
-            //System.out.println(q.type);
-            //OutputHandler.getInstance().write("# ");
-            //q.print();
             q.assemble(f);
         }
     }

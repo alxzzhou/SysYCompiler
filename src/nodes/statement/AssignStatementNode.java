@@ -15,6 +15,7 @@ import java.io.IOException;
 import static cfg.CFGBuilder.CFG_BUILDER;
 import static statics.setup.SyntaxType.EXPR;
 import static statics.setup.SyntaxType.GETINTTK;
+import static statics.setup.SyntaxType.LVAL;
 
 public class AssignStatementNode extends Node {
     public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
@@ -46,7 +47,7 @@ public class AssignStatementNode extends Node {
     }
 
     public void check(ExcCheckInfo info, ExcCheckRes res) {
-        if (children.getFirst().type == EXPR) {
+        if (children.getFirst().type == LVAL) {
             info.isLVal = true;
             children.getFirst().check(info, res);
             info.isLVal = false;

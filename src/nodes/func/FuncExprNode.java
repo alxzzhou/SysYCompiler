@@ -21,6 +21,7 @@ import static cfg.CFGBuilder.CFG_BUILDER;
 import static cfg.quad.QuadUtil.genIRFunc;
 import static statics.exception.CompException.ExcDesc.CORRECT;
 import static statics.exception.CompException.ExcDesc.UNDEFINED;
+import static statics.exception.CompException.ExcDesc.UNDEFINED_IDENT;
 import static statics.exception.Errors.errors;
 import static statics.setup.Symbol.SYMBOL;
 
@@ -65,7 +66,7 @@ public class FuncExprNode extends Node {
                 String funcName = ((TokenNode) node).content;
                 fs = SYMBOL.getFunc(funcName);
                 if (fs == null) {
-                    errors.add(new CompException(UNDEFINED.toCode(), node.finishLine));
+                    errors.add(new CompException(UNDEFINED_IDENT.toCode(), node.finishLine));
                 } else if (fs.isVoid) {
                     res.dim = -1;
                 }

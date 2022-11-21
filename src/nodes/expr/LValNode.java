@@ -99,12 +99,12 @@ public class LValNode extends Node {
                 } else if (info.isLVal && lvs.isConst) {
                     errors.add(new CompException(MODIFY_CONST.toCode(), node.finishLine));
                 }
-                info.isLVal = false;
-                ExcCheckRes r = new ExcCheckRes();
-                node.check(info, r);
-                if (node.type == EXPR) {
-                    cnt++;
-                }
+            }
+            info.isLVal = false;
+            ExcCheckRes r = new ExcCheckRes();
+            node.check(info, r);
+            if (node.type == EXPR) {
+                cnt++;
             }
         }
         if (lvs != null) {

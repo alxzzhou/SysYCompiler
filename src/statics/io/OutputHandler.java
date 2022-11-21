@@ -11,7 +11,7 @@ import static statics.io.OutputHandler.IOConfig.PARSER;
 import static statics.io.OutputHandler.IOConfig.TOKEN;
 
 public class OutputHandler {
-    public static final IOConfig CONFIG = IOConfig.MIPS;
+    public static final IOConfig CONFIG = IOConfig.ERROR;
     public static final boolean PRINT_TOKEN = CONFIG == TOKEN;
     public static final boolean PRINT_PARSER = CONFIG == PARSER;
     public static final boolean PRINT_ERROR = CONFIG == IOConfig.ERROR;
@@ -92,7 +92,7 @@ public class OutputHandler {
 
     public void writeln(CompException ce) throws IOException {
         if (PRINT_ERROR) {
-            ERROR.write(ce.line + " " + ce.code);
+            ERROR.write(ce.line + " " + ce.code + "\n");
             ERROR.flush();
         }
     }
