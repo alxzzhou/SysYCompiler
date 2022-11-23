@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static cfg.CFGBuilder.OPTIMIZE;
 import static statics.assembly.AssemblyType.CREATE_POINTER;
 
 public class Function {
@@ -19,7 +18,7 @@ public class Function {
     Map<String, Set<Quadruple>> use;
     String tag;
     BasicBlock head, tail;
-    HashMap<String, Integer>
+    final HashMap<String, Integer>
             v2r = new HashMap<>(),
             v2m = new HashMap<>(),
             a2m = new HashMap<>(),
@@ -59,7 +58,7 @@ public class Function {
     public void ralloc() {
         calcOutVar();
         calcVarWt();
-        if (OPTIMIZE) {
+        if (Optimize.OPTIMAL) {
             // TODO: head.ralloc
         }
         for (BasicBlock b = head; b != null; b = b.next) {

@@ -1,15 +1,11 @@
 package parser;
 
 import lexer.Tokens;
-import nodes.expr.EqExprNode;
 import nodes.expr.ExprNode;
-import nodes.expr.LAndExprNode;
-import nodes.expr.LOrExprNode;
 import nodes.expr.LValNode;
 import nodes.expr.NumberNode;
 import nodes.expr.OmniExpr;
 import nodes.expr.PrimaryExprNode;
-import nodes.expr.RelExprNode;
 import nodes.expr.UnaryExprNode;
 import nodes.expr.UnaryPrefixOpNode;
 import nodes.func.FuncArgsNode;
@@ -36,7 +32,6 @@ import nodes.var.InitValNode;
 import nodes.var.VarDeclNode;
 import nodes.var.VarDefNode;
 import statics.exception.CompException;
-import statics.io.OutputHandler;
 import statics.setup.SyntaxType;
 
 import java.io.IOException;
@@ -60,12 +55,7 @@ public class Parser {
         return builder;
     }
 
-    void next() throws IOException {
-        tokens.printCurToken();
-        tokens.bump();
-    }
-
-    void check(SyntaxType t, CompException.Exception e) throws IOException {
+    void check(SyntaxType t, CompException.Exception e) {
         if (tokens.curToken().type != t) {
             error(e);
         } else {
@@ -73,7 +63,7 @@ public class Parser {
         }
     }
 
-    void terminate() throws IOException {
+    void terminate() {
         builder.terminate(tokens.curToken());
         //OutputHandler.getInstance().writeln(tokens.curToken());
         tokens.bump();
@@ -104,7 +94,6 @@ public class Parser {
             type = tokens.curToken().type;
         }
         builder.parseNode(new CompUnitNode());
-        OutputHandler.getInstance().writeln("<CompUnit>");
     }
 
     void funcDef() throws IOException {
@@ -123,10 +112,9 @@ public class Parser {
         check(RPARENT, LACK_PARENT.toCode());
         block();
         builder.parseNode(new FuncDefNode());
-        OutputHandler.getInstance().writeln((type == MAINTK) ? "<MainFuncDef>" : "<FuncDef>");
     }
 
-    void funcType() throws IOException {
+    void funcType() {
         builder.initNode(FUNC_TYPE);
         SyntaxType type = tokens.curToken().type;
         if (type != VOIDTK && type != INTTK) {
@@ -135,7 +123,6 @@ public class Parser {
         }
         terminate();
         builder.parseNode(new FuncTypeNode());
-        OutputHandler.getInstance().writeln("<FuncType>");
     }
 
     void funcFParams() throws IOException {
@@ -146,7 +133,6 @@ public class Parser {
             funcFParam();
         }
         builder.parseNode(new FuncParamsNode());
-        OutputHandler.getInstance().writeln("<FuncFParams>");
     }
 
     void funcFParam() throws IOException {
@@ -163,12 +149,10 @@ public class Parser {
             }
         }
         builder.parseNode(new FuncParamNode());
-        OutputHandler.getInstance().writeln("<FuncFParam>");
     }
 
     void constExpr() throws IOException {
         expr();
-        OutputHandler.getInstance().writeln("<ConstExp>");
     }
 
     void block() throws IOException {
@@ -186,7 +170,6 @@ public class Parser {
         }
         check(RBRACE, UNDEFINED.toCode());
         builder.parseNode(new BlockNode());
-        OutputHandler.getInstance().writeln("<Block>");
     }
 
     void decl() throws IOException {
@@ -201,35 +184,6 @@ public class Parser {
     void statement() throws IOException {
         builder.initNode(STMT);
         SyntaxType type = tokens.curToken().type;
-        /*if (type == IDENFR) {
-            int i = 1;
-            boolean lval = false;
-            while (tokens.nextNToken(i).type != SEMICN) {
-                if (tokens.nextNToken(i).type == ASSIGN) {
-                    lval = true;
-                    break;
-                }
-                i++;
-            }
-            if (lval) {
-                lval();
-                next();
-                if (tokens.curToken().type == GETINTTK) {
-                    next();
-                    next();
-                    next();
-                } else {
-                    expr();
-                }
-            } else {
-                expr();
-            }
-            // TODO: check SEMICN
-            next();
-        } else if (EXPR_PREFIX.contains(type)) {
-            expr();
-            // TODO: check SEMICN
-            next();}*/
         if (EXPR_PREFIX.contains(type)) {
             int p = builder.getChildrenSize();
             int i = 1;
@@ -275,7 +229,6 @@ public class Parser {
             return;
         }
         builder.parseNode(new StatementNode());
-        OutputHandler.getInstance().writeln("<Stmt>");
     }
 
     private void exprStatement(int p) throws IOException {
@@ -344,7 +297,7 @@ public class Parser {
         builder.initNode(IF_STMT);
         check(IFTK, UNDEFINED.toCode());
         check(LPARENT, UNDEFINED.toCode());
-        cond();
+        expr();
         check(RPARENT, LACK_PARENT.toCode());
         statement();
         if (tokens.curToken().type == ELSETK) {
@@ -354,90 +307,11 @@ public class Parser {
         builder.parseNode(new IfNode());
     }
 
-    void cond() throws IOException {
-        lOrExpr();
-    }
-
-    void lOrExpr() throws IOException {
-        builder.initNode(LOR_EXPR);
-        lAndExpr();
-        lOrExpr_();
-        builder.parseNode(new LOrExprNode());
-    }
-
-    void lOrExpr_() throws IOException {
-        if (tokens.curToken().type == OR) {
-            terminate();
-            builder.initNode(LOR_EXPR);
-            lAndExpr();
-            lOrExpr_();
-            builder.parseNode(new LOrExprNode());
-        }
-    }
-
-    void lAndExpr() throws IOException {
-        builder.initNode(LAND_EXPR);
-        eqExpr();
-        lAndExpr_();
-        builder.parseNode(new LAndExprNode());
-        OutputHandler.getInstance().writeln("<LAndExp>");
-    }
-
-    void lAndExpr_() throws IOException {
-        if (tokens.curToken().type == AND) {
-            OutputHandler.getInstance().writeln("<LAndExp>");
-            terminate();
-            builder.initNode(LAND_EXPR);
-            eqExpr();
-            lAndExpr_();
-            builder.parseNode(new LAndExprNode());
-        }
-    }
-
-    void eqExpr() throws IOException {
-        builder.initNode(EQ_EXPR);
-        relExpr();
-        eqExpr_();
-        builder.parseNode(new EqExprNode());
-        OutputHandler.getInstance().writeln("<EqExp>");
-    }
-
-    void eqExpr_() throws IOException {
-        if (tokens.curToken().type == EQL || tokens.curToken().type == NEQ) {
-            OutputHandler.getInstance().writeln("<EqExp>");
-            terminate();
-            builder.initNode(EQ_EXPR);
-            relExpr();
-            eqExpr_();
-            builder.parseNode(new EqExprNode());
-        }
-    }
-
-    void relExpr() throws IOException {
-        builder.initNode(REL_EXPR);
-        expr();
-        relExpr_();
-        builder.parseNode(new RelExprNode());
-        OutputHandler.getInstance().writeln("<RelExp>");
-    }
-
-    void relExpr_() throws IOException {
-        SyntaxType t = tokens.curToken().type;
-        if (t == GRE || t == GEQ || t == LSS || t == LEQ) {
-            OutputHandler.getInstance().writeln("<RelExp>");
-            terminate();
-            builder.initNode(REL_EXPR);
-            expr();
-            relExpr_();
-            builder.parseNode(new RelExprNode());
-        }
-    }
-
     void whileStatement() throws IOException {
         builder.initNode(WHILE_STMT);
         check(WHILETK, UNDEFINED.toCode());
         check(LPARENT, UNDEFINED.toCode());
-        cond();
+        expr();
         check(RPARENT, LACK_PARENT.toCode());
         statement();
         builder.parseNode(new WhileNode());
@@ -447,7 +321,6 @@ public class Parser {
         builder.initNode(EXPR);
         omniExpr(0);
         builder.parseNode(new ExprNode());
-        OutputHandler.getInstance().writeln("<Exp>");
     }
 
     void omniExpr(int cp) throws IOException {
@@ -466,7 +339,6 @@ public class Parser {
             }
             t = tokens.curToken().type;
         }
-        OutputHandler.getInstance().writeln("<AddExp>");
     }
 
     void unaryExpr() throws IOException {
@@ -482,7 +354,6 @@ public class Parser {
             primaryExpr();
         }
         builder.parseNode(new UnaryExprNode());
-        OutputHandler.getInstance().writeln("<UnaryExp>");
     }
 
     private void unaryPrefixOp() throws IOException {
@@ -495,9 +366,8 @@ public class Parser {
         builder.parseNode(new UnaryPrefixOpNode());
     }
 
-    void unaryOp() throws IOException {
+    void unaryOp() {
         terminate();
-        OutputHandler.getInstance().writeln("<UnaryOp>");
     }
 
     void primaryExpr() throws IOException {
@@ -513,14 +383,12 @@ public class Parser {
             number();
         }
         builder.parseNode(new PrimaryExprNode());
-        OutputHandler.getInstance().writeln("<PrimaryExp>");
     }
 
     void number() throws IOException {
         builder.initNode(NUMBER);
         check(INTCON, UNDEFINED.toCode());
         builder.parseNode(new NumberNode());
-        OutputHandler.getInstance().writeln("<Number>");
     }
 
     void lval() throws IOException {
@@ -536,7 +404,6 @@ public class Parser {
             check(RBRACK, LACK_BRACKET.toCode());
         }
         builder.parseNode(new LValNode());
-        OutputHandler.getInstance().writeln("<LVal>");
     }
 
     void funcExpr() throws IOException {
@@ -566,7 +433,6 @@ public class Parser {
             expr();
         }
         builder.parseNode(new FuncArgsNode());
-        OutputHandler.getInstance().writeln("<FuncRParams>");
     }
 
     void initVal() throws IOException {
@@ -594,7 +460,6 @@ public class Parser {
             return;
         }
         builder.parseNode(new InitValNode());
-        OutputHandler.getInstance().writeln("<InitVal>");
     }
 
     void varDef() throws IOException {
@@ -610,7 +475,6 @@ public class Parser {
             initVal();
         }
         builder.parseNode(new VarDefNode());
-        OutputHandler.getInstance().writeln("<VarDef>");
     }
 
     void varDecl() throws IOException {
@@ -623,7 +487,6 @@ public class Parser {
         }
         check(SEMICN, LACK_SEMICN.toCode());
         builder.parseNode(new VarDeclNode());
-        OutputHandler.getInstance().writeln("<VarDecl>");
     }
 
     void constDecl() throws IOException {
@@ -637,7 +500,6 @@ public class Parser {
         }
         check(SEMICN, LACK_SEMICN.toCode());
         builder.parseNode(new ConstDeclNode());
-        OutputHandler.getInstance().writeln("<ConstDecl>");
     }
 
     void constDef() throws IOException {
@@ -651,7 +513,6 @@ public class Parser {
         terminate();
         constInitVal();
         builder.parseNode(new ConstDefNode());
-        OutputHandler.getInstance().writeln("<ConstDef>");
     }
 
     void constInitVal() throws IOException {
@@ -673,6 +534,5 @@ public class Parser {
             constExpr();
         }
         builder.parseNode(new ConstInitValNode());
-        OutputHandler.getInstance().writeln("<ConstInitVal>");
     }
 }

@@ -8,13 +8,11 @@ import statics.exception.ExcCheckInfo;
 import statics.exception.ExcCheckRes;
 import statics.setup.SyntaxType;
 
-import java.io.IOException;
-
 public class NumberNode extends Node {
     String r;
 
     @Override
-    public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
+    public void assemble(AssemblyInfo info, AssemblyRes res) {
         r = ((TokenNode) children.getFirst()).content;
         res.res = r;
     }

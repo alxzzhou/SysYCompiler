@@ -61,7 +61,7 @@ public class NEQ extends Quadruple {
     @Override
     public void assemble(Function f) throws IOException {
         if (isNumberFormat(v1)) {
-            OutputHandler.getInstance().writeln(";i $27, " + v1);
+            OutputHandler.getInstance().writeln("li $27, " + v1);
             v1 = "$27";
         } else if (!isReg(v1)) {
             OutputHandler.getInstance().writeln("lw $27, " + v1.substring(2) + "($sp)");

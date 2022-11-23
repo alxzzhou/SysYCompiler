@@ -3,8 +3,6 @@ import lexer.Tokens;
 import parser.Parser;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
-import statics.exception.ExcCheckInfo;
-import statics.exception.ExcCheckRes;
 import statics.io.InputHandler;
 
 public class Compiler {

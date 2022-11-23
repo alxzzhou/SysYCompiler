@@ -3,8 +3,6 @@ package nodes.var;
 import nodes.Node;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
-import statics.exception.ExcCheckInfo;
-import statics.exception.ExcCheckRes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +10,6 @@ import java.util.List;
 
 import static statics.setup.SyntaxType.CONST_INIT_VAL;
 import static statics.setup.SyntaxType.EXPR;
-import static statics.setup.SyntaxType.INIT_VAL;
 
 public class ConstInitValNode extends Node {
     @Override
@@ -27,10 +24,5 @@ public class ConstInitValNode extends Node {
             }
         }
         res.init = initVal;
-    }
-
-    @Override
-    public void check(ExcCheckInfo info, ExcCheckRes res) {
-
     }
 }

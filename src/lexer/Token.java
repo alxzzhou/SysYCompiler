@@ -32,7 +32,4 @@ public class Token {
         return type == SyntaxType.ERR;
     }
 
-    void printDebug() {
-        System.out.println(type + " " + content);
-    }
 }

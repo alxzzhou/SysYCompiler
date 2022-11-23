@@ -118,10 +118,6 @@ public class Symbol {
         return symbolStack.size();
     }
 
-//    public void addConstString(String str) {
-//        constStrings.put(genIRStr(), str);
-//    }
-
     public void addConstString(String l, String str) {
         constStrings.put(l, str);
     }

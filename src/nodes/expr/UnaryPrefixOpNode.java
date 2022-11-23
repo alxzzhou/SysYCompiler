@@ -7,13 +7,11 @@ import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
 import statics.setup.SyntaxType;
 
-import java.io.IOException;
-
 import static cfg.CFGBuilder.CFG_BUILDER;
 
 public class UnaryPrefixOpNode extends Node {
     @Override
-    public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
+    public void assemble(AssemblyInfo info, AssemblyRes res) {
         if (info.isConst) {
             int val = Integer.parseInt(info.res);
             for (Node node : children) {

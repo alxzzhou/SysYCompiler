@@ -4,10 +4,8 @@ import cfg.quad.Quadruple;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import static statics.assembly.AssemblyType.CREATE_POINTER;
@@ -17,19 +15,13 @@ public class BasicBlock {
     public String tag;
     public Quadruple head, tail;
     public HashSet<BasicBlock>
-            pred = new HashSet<>(),
-            succ = new HashSet<>(),
-            dominator = new HashSet<>();
+            pred = new HashSet<>();
     public BasicBlock next, prev;
-    List<BasicBlock> domChildren = new ArrayList<>();
-    BasicBlock nearestDominator;
-    //HashMap<String, PhiFunc> phiNode = new HashMap<>();
     HashSet<String>
             activeIn = new HashSet<>(),
             activeOut = new HashSet<>(),
             varDefine = new HashSet<>(),
             varUse = new HashSet<>();
-    int domSize = 0, dfsn = 0;
 
     public BasicBlock(int id) {
         tag = "LABEL_" + id;

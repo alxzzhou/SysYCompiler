@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.HashSet;
 
 public class CFGBuilder {
-    public static final boolean OPTIMIZE = false;
 
     public static final CFGBuilder CFG_BUILDER =
             new CFGBuilder();

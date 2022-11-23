@@ -20,7 +20,6 @@ import java.util.List;
 import static cfg.CFGBuilder.CFG_BUILDER;
 import static cfg.quad.QuadUtil.genIRFunc;
 import static statics.exception.CompException.ExcDesc.CORRECT;
-import static statics.exception.CompException.ExcDesc.UNDEFINED;
 import static statics.exception.CompException.ExcDesc.UNDEFINED_IDENT;
 import static statics.exception.Errors.errors;
 import static statics.setup.Symbol.SYMBOL;
@@ -74,7 +73,7 @@ public class FuncExprNode extends Node {
             ExcCheckRes r = new ExcCheckRes();
             node.check(info, r);
             if (node.type == SyntaxType.IDENFR) {
-                line = ((TokenNode) node).finishLine;
+                line = node.finishLine;
             } else if (fs != null &&
                     (node.type == SyntaxType.FUNC_ARGS ||
                             (!fl && node.type == SyntaxType.RPARENT))) {

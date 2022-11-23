@@ -3,8 +3,6 @@ package nodes.var;
 import nodes.Node;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
-import statics.exception.ExcCheckInfo;
-import statics.exception.ExcCheckRes;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +26,4 @@ public class InitValNode extends Node {
         res.init = initVal;
     }
 
-    @Override
-    public void check(ExcCheckInfo info, ExcCheckRes res) {
-    }
 }

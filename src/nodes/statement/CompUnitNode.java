@@ -1,5 +1,6 @@
 package nodes.statement;
 
+import cfg.Optimize;
 import nodes.Node;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
@@ -10,7 +11,6 @@ import statics.io.OutputHandler;
 import java.io.IOException;
 
 import static cfg.CFGBuilder.CFG_BUILDER;
-import static cfg.CFGBuilder.OPTIMIZE;
 import static statics.setup.Symbol.SYMBOL;
 import static statics.setup.SyntaxType.FUNC_DEF;
 
@@ -22,7 +22,7 @@ public class CompUnitNode extends Node {
             info.isGlobal = (node.type != FUNC_DEF);
             node.assemble(info, res);
         }
-        if (OPTIMIZE) {
+        if (Optimize.OPTIMAL) {
             // TODO: optimize
         }
         if (OutputHandler.CONFIG == OutputHandler.IOConfig.IR) {

@@ -9,7 +9,6 @@ import statics.io.OutputHandler;
 import statics.setup.Pair;
 import statics.setup.SyntaxType;
 
-import java.io.IOException;
 import java.util.LinkedList;
 
 import static statics.exception.CompException.ExcDesc.UNDEFINED;
@@ -23,12 +22,12 @@ public class TreeBuilder {
         children = new LinkedList<>();
     }
 
-    public void initNode(SyntaxType t) throws IOException {
+    public void initNode(SyntaxType t) {
         parents.addLast(new Pair<>(t, children.size()));
         OutputHandler.getInstance().debug("START NODE: " + t + children.size());
     }
 
-    public void initNodeAt(SyntaxType t, int n) throws IOException {
+    public void initNodeAt(SyntaxType t, int n) {
         parents.offer(new Pair<>(t, n));
         OutputHandler.getInstance().debug("START NODE: " + t + n);
     }

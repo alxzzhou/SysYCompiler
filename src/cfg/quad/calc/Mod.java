@@ -60,7 +60,9 @@ public class Mod extends Quadruple {
 
     @Override
     public void assemble(Function f) throws IOException {
+        boolean fl = false;
         if (isNumberFormat(v1)) {
+            fl = true;
             OutputHandler.getInstance()
                     .writeln("li $27, " + v1);
             v1 = "$27";
@@ -71,29 +73,18 @@ public class Mod extends Quadruple {
         }
 
         if (isNumberFormat(v2)) {
-            /*
-            var val2 = Long.parseLong(v2);
-            var l = (int) Math.max(Math.ceil(Math.log(Math.abs(val2) / Math.log(2))), 1);
-            var m = (1 + (1L << (32 + l - 1)) / Math.abs(val2));
-            var mm = m - (1L << 32);
-            var d = val2 < 0 ? -1 : 0;
-            var sh = l - 1;
-            OutputHandler.getInstance().writeln("li $28, " + mm);
-            OutputHandler.getInstance().writeln("mult $28, " + v1);
-            OutputHandler.getInstance().writeln("mfhi $28");
-            OutputHandler.getInstance().writeln("addu $28, " + v1 + ", $28");
-            OutputHandler.getInstance().writeln("sra $28, $28, " + sh);
-            OutputHandler.getInstance().writeln("slt $27, " + v1 + ", $0");
-            OutputHandler.getInstance().writeln("addu $28, $28, $27");
-            OutputHandler.getInstance().writeln("xori $28, $28, " + d);
-            if (isReg(target)) {
-                OutputHandler.getInstance().writeln("subiu " + target + ", $28, " + d);
-            } else {
-                OutputHandler.getInstance().writeln("subiu $28, $28, " + d);
-                OutputHandler.getInstance().writeln("sw $28, " + target.substring(2) + "($sp)");
+            int i2 = Integer.parseInt(v2);
+            if (fl) {
+                int i1 = Integer.parseInt(v1);
+                if (isReg(target)) {
+                    OutputHandler.getInstance().writeln("li " + target + ", " + (i1 % i2));
+                } else {
+                    OutputHandler.getInstance().writeln("li $28, " + (i1 % i2));
+                    OutputHandler.getInstance()
+                            .writeln("sw $28, " + target.substring(2) + "($sp)");
+                }
+                return;
             }
-            return;
-            */
             OutputHandler.getInstance().writeln("li $28, " + v2);
             v2 = "$28";
         } else if (!isReg(v2)) {

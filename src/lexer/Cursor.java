@@ -19,10 +19,6 @@ public class Cursor {
         return reachEnd() ? (char) -1 : CODE.charAt(pos);
     }
 
-    public char nextNthChar(int n) {
-        return (pos + n >= CODE_LEN) ? (char) -1 : CODE.charAt(pos + n);
-    }
-
     public boolean reachEnd() {
         return pos == CODE_LEN - 1;
     }

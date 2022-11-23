@@ -25,11 +25,7 @@ public class OutputHandler {
     private static final BufferedWriter IR;
 
     static {
-        try {
-            INSTANCE = new OutputHandler();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        INSTANCE = new OutputHandler();
     }
 
     static {
@@ -64,7 +60,7 @@ public class OutputHandler {
         }
     }
 
-    private OutputHandler() throws IOException {
+    private OutputHandler()  {
     }
 
     public static OutputHandler getInstance() {
@@ -115,7 +111,7 @@ public class OutputHandler {
         }
     }
 
-    public void debug(String s) throws IOException {
+    public void debug(String s)  {
         if (DEBUG) {
             System.out.println(s);
         }

@@ -61,18 +61,6 @@ public class LOrExprNode extends Node {
             if (!fl) {
                 CFG_BUILDER.switchBlock(block);
             }
-//            AssemblyRes r1 = new AssemblyRes(), r2 = new AssemblyRes();
-//            Node op = children.get(1);
-//            children.getFirst().assemble(info, r1);
-//            children.getLast().assemble(info, r2);
-//            if (isNumberFormat(r1.res) && isNumberFormat(r2.res)) {
-//                int v1 = Integer.parseInt(r1.res);
-//                int v2 = Integer.parseInt(r2.res);
-//                val = String.valueOf(v1 | v2);
-//            } else {
-//                val = CFG_BUILDER.tempVar();
-//                CFG_BUILDER.insert(new OR(val, r1.res, r2.res));
-//            }
         }
         res.res = val;
     }

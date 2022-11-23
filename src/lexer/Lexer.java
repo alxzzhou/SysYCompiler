@@ -1,6 +1,5 @@
 package lexer;
 
-import statics.exception.CompException;
 import statics.io.OutputHandler;
 import statics.setup.SyntaxType;
 
@@ -8,7 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static statics.exception.Errors.errors;
 import static statics.setup.SyntaxType.BCOMMENT;
 import static statics.setup.SyntaxType.LCOMMENT;
 

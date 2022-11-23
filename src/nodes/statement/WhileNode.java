@@ -3,7 +3,7 @@ package nodes.statement;
 import cfg.BasicBlock;
 import cfg.quad.jump.FalseJump;
 import nodes.Node;
-import nodes.expr.LOrExprNode;
+import nodes.expr.ExprNode;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
 import statics.exception.ExcCheckInfo;
@@ -21,13 +21,13 @@ public class WhileNode extends Node {
         // CONDITION
         children.get(2).assemble(info, res);
         BasicBlock fb = CFG_BUILDER.createBB();
-        LOrExprNode cond = info.cond;
+        ExprNode cond = info.cond;
         CFG_BUILDER.insert(new FalseJump(fb, res.res));
         BasicBlock body = CFG_BUILDER.createBB();
         CFG_BUILDER.switchBlock(body);
         info.breakBlock = fb;
         info.inLoop = true;
-        info.cond = (LOrExprNode) children.get(2);
+        info.cond = (ExprNode) children.get(2);
         // BLOCK
         children.get(4).assemble(info, res);
         info.breakBlock = b;

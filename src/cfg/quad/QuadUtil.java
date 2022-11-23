@@ -34,6 +34,10 @@ public class QuadUtil {
         return true;
     }
 
+    public static boolean isPowerOf2(int i) {
+        return (i & -i) == i;
+    }
+
     public static boolean isReg(String s) {
         return s.charAt(0) == '$';
     }

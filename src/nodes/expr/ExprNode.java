@@ -1,11 +1,5 @@
 package nodes.expr;
 
-import cfg.quad.calc.Divide;
-import cfg.quad.calc.Minus;
-import cfg.quad.calc.Mod;
-import cfg.quad.calc.Multiply;
-import cfg.quad.calc.Plus;
-import cfg.quad.calc.Singleton;
 import nodes.Node;
 import statics.assembly.AssemblyInfo;
 import statics.assembly.AssemblyRes;
@@ -13,14 +7,6 @@ import statics.exception.ExcCheckInfo;
 import statics.exception.ExcCheckRes;
 
 import java.io.IOException;
-
-import static cfg.CFGBuilder.CFG_BUILDER;
-import static cfg.quad.QuadUtil.isNumberFormat;
-import static statics.setup.SyntaxType.DIV;
-import static statics.setup.SyntaxType.MINU;
-import static statics.setup.SyntaxType.MOD;
-import static statics.setup.SyntaxType.MULT;
-import static statics.setup.SyntaxType.PLUS;
 
 public class ExprNode extends Node {
     String res;

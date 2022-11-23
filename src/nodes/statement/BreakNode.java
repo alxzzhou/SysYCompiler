@@ -8,15 +8,13 @@ import statics.exception.CompException;
 import statics.exception.ExcCheckInfo;
 import statics.exception.ExcCheckRes;
 
-import java.io.IOException;
-
 import static cfg.CFGBuilder.CFG_BUILDER;
 import static statics.exception.CompException.ExcDesc.UNEXPECTED_BREAK_CONTINUE;
 import static statics.exception.Errors.errors;
 
 public class BreakNode extends Node {
     @Override
-    public void assemble(AssemblyInfo info, AssemblyRes res) throws IOException {
+    public void assemble(AssemblyInfo info, AssemblyRes res) {
         CFG_BUILDER.insert(new UnconditionalJump(info.breakBlock));
     }
 
