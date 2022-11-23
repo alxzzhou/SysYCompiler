@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.AND_LOGIC;
 public class AND extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " & " + v2);
+    }
+
     public AND(String target, String v1, String v2) {
         super(AND_LOGIC);
         this.target = target;

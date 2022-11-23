@@ -14,6 +14,11 @@ import static statics.assembly.AssemblyType.RETURN;
 public class Return extends Quadruple {
     String res;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("RETURN " + res);
+    }
+
     public Return(String r) {
         super(RETURN);
         this.res = r;

@@ -14,6 +14,11 @@ import static cfg.quad.QuadUtil.isReg;
 public class Not extends Quadruple {
     String target, v;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = ! " + v);
+    }
+
     public Not(String target, String v) {
         super(AssemblyType.NOT_LOGIC);
         this.target = target;

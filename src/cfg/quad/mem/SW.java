@@ -15,6 +15,11 @@ import static cfg.quad.QuadUtil.isReg;
 public class SW extends Quadruple {
     String offset, integer, pointer;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("SAVE_WORD " + integer + " -> " + pointer + "(" + offset + ")");
+    }
+
     public SW(String i, String pointer, String offset) {
         super(AssemblyType.SW);
         this.integer = i;
@@ -80,6 +85,13 @@ public class SW extends Quadruple {
         if (isReg(integer)) {
             OutputHandler.getInstance()
                     .writeln("sw " + integer + ", " + offset + "(" + pointer + ")");
+        } else {
+            if (integer.charAt(0) == 's') {
+                OutputHandler.getInstance().writeln("lw $28, " + integer.substring(2) + "($sp)");
+            } else {
+                OutputHandler.getInstance().writeln("li $28, " + integer);
+            }
+            OutputHandler.getInstance().writeln("sw $28, " + offset + "(" + pointer + ")");
         }
     }
 }

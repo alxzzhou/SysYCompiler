@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.OR_LOGIC;
 public class OR extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " | " + v2);
+    }
+
     public OR(String target, String v1, String v2) {
         super(OR_LOGIC);
         this.target = target;

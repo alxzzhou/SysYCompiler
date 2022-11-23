@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.LE_LOGIC;
 public class LEQ extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " <= " + v2);
+    }
+
     public LEQ(String target, String v1, String v2) {
         super(LE_LOGIC);
         this.target = target;

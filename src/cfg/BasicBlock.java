@@ -39,6 +39,13 @@ public class BasicBlock {
         tag = f.tag + "_" + t.tag;
     }
 
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(tag + ":");
+        for (Quadruple q = head; q != null; q = q.next) {
+            q.print();
+        }
+    }
+
     public void assemble(Function f) throws IOException {
         OutputHandler.getInstance().writeln(tag + ":");
         for (Quadruple q = head; q != null; q = q.next) {

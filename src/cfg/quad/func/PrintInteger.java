@@ -20,6 +20,11 @@ public class PrintInteger extends Quadruple {
     }
 
     @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("PRINT_INT " + i);
+    }
+
+    @Override
     public Set<String> getUse() {
         HashSet<String> r = new HashSet<>();
         r.add(i);

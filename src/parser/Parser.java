@@ -356,7 +356,6 @@ public class Parser {
 
     void cond() throws IOException {
         lOrExpr();
-        OutputHandler.getInstance().writeln("<Cond>");
     }
 
     void lOrExpr() throws IOException {
@@ -364,12 +363,10 @@ public class Parser {
         lAndExpr();
         lOrExpr_();
         builder.parseNode(new LOrExprNode());
-        OutputHandler.getInstance().writeln("<LOrExp>");
     }
 
     void lOrExpr_() throws IOException {
         if (tokens.curToken().type == OR) {
-            OutputHandler.getInstance().writeln("<LOrExp>");
             terminate();
             builder.initNode(LOR_EXPR);
             lAndExpr();

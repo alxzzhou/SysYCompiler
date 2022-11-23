@@ -14,6 +14,11 @@ import static cfg.quad.QuadUtil.isNumberFormat;
 public class Assign extends Quadruple {
     String target, integer;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("ASSIGN " + target + " = " + integer);
+    }
+
     public Assign(String target, String integer) {
         super(AssemblyType.ASSIGN);
         this.target = target;

@@ -18,6 +18,11 @@ public class FetchInt extends Quadruple {
         this.target = target;
     }
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("FETCH_INT " + target);
+    }
+
     public String getDefine() {
         return target;
     }

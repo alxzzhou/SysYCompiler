@@ -1,7 +1,7 @@
 package cfg;
 
 import cfg.quad.Quadruple;
-import cfg.quad.mem.Pointer;
+import cfg.quad.mem.NP;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
@@ -30,6 +30,13 @@ public class Function {
     public Function(String tag, int pn) {
         this.tag = tag;
         this.paramNum = pn;
+    }
+
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(tag + ":");
+        for (BasicBlock b = head; b != null; b = b.next) {
+            b.print();
+        }
     }
 
     public void assemble() throws IOException {
@@ -61,7 +68,7 @@ public class Function {
                 if (d != null && !v2r.containsKey(d)) {
                     if (q.type == CREATE_POINTER) {
                         a2m.put(d, addr);
-                        addr += ((Pointer) q).size * 4;
+                        addr += ((NP) q).s * 4;
                     } else {
                         v2m.put(d, addr);
                         addr += 4;

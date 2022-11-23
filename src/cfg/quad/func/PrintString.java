@@ -12,6 +12,11 @@ import java.util.Set;
 public class PrintString extends Quadruple {
     public String s;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("PRINT_STRING " + s);
+    }
+
     public PrintString(String s) {
         super(AssemblyType.PRINT_STR);
         this.s = s;

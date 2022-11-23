@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.GT_LOGIC;
 public class GRE extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " > " + v2);
+    }
+
     public GRE(String target, String v1, String v2) {
         super(GT_LOGIC);
         this.target = target;

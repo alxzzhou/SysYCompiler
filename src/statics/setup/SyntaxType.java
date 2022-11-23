@@ -106,14 +106,14 @@ public enum SyntaxType {
 
     public static final HashMap<SyntaxType, Integer> OPERAND_PRIORITY =
             new HashMap<SyntaxType, Integer>() {{
-                put(OR, 1);
-                put(AND, 2);
-                put(EQL, 3);
-                put(NEQ, 3);
-                put(GEQ, 4);
-                put(LEQ, 4);
-                put(GRE, 4);
-                put(LSS, 4);
+                //put(OR, 1);
+                //put(AND, 2);
+                //put(EQL, 3);
+                //put(NEQ, 3);
+                //put(GEQ, 4);
+                //put(LEQ, 4);
+                //put(GRE, 4);
+                //put(LSS, 4);
                 put(PLUS, 5);
                 put(MINU, 5);
                 put(DIV, 6);

@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.GE_LOGIC;
 public class GEQ extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " >= " + v2);
+    }
+
     public GEQ(String target, String v1, String v2) {
         super(GE_LOGIC);
         this.target = target;

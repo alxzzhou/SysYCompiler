@@ -25,13 +25,17 @@ public class CompUnitNode extends Node {
         if (OPTIMIZE) {
             // TODO: optimize
         }
-        CFG_BUILDER.ralloc();
-        OutputHandler.getInstance().writeln(".data");
-        SYMBOL.printGlobalVars();
-        OutputHandler.getInstance().writeln(
-                ".text\njal func_main\nli $v0, 10\nsyscall"
-        );
-        CFG_BUILDER.assemble();
+        if (OutputHandler.CONFIG == OutputHandler.IOConfig.IR) {
+            CFG_BUILDER.print();
+        } else {
+            CFG_BUILDER.ralloc();
+            OutputHandler.getInstance().writeln(".data");
+            SYMBOL.printGlobalVars();
+            OutputHandler.getInstance().writeln(
+                    ".text\njal func_main\nli $v0, 10\nsyscall"
+            );
+            CFG_BUILDER.assemble();
+        }
         SYMBOL.finishBlock();
     }
 

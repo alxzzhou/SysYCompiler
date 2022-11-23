@@ -14,7 +14,7 @@ public class GetInt extends Quadruple {
     }
 
     public void print() throws IOException {
-        OutputHandler.getInstance().writeln("GETINT");
+        OutputHandler.getInstance().writeln("GET_INT");
     }
 
     public void assemble(Function f) throws IOException {

@@ -15,6 +15,11 @@ import static statics.assembly.AssemblyType.LT_LOGIC;
 public class LSS extends Quadruple {
     String target, v1, v2;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " < " + v2);
+    }
+
     public LSS(String target, String v1, String v2) {
         super(LT_LOGIC);
         this.target = target;
@@ -66,7 +71,11 @@ public class LSS extends Quadruple {
             OutputHandler.getInstance().writeln("lw $28, " + v2.substring(2) + "($sp)");
             v2 = "$28";
         }
-        String op = isReg(v2) ? "slt " : "slti ";
+        if (!isReg(v2)) {
+            OutputHandler.getInstance().writeln("li $28, " + v2);
+            v2 = "$28";
+        }
+        String op = "slt ";
         if (isReg(target)) {
             OutputHandler.getInstance().writeln(op + target + ", " + v1 + ", " + v2);
         } else {

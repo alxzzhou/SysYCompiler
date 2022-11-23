@@ -14,6 +14,11 @@ import static cfg.quad.QuadUtil.isReg;
 public class Negate extends Quadruple {
     String target, v;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = - " + v);
+    }
+
     public Negate(String t, String v) {
         super(AssemblyType.NEGATE_ARITH);
         this.target = t;

@@ -18,6 +18,12 @@ public class CFGBuilder {
     public CFGBuilder() {
     }
 
+    public void print() throws IOException {
+        for (Function f : funcs) {
+            f.print();
+        }
+    }
+
     public void ralloc() {
         funcs.forEach(Function::ralloc);
     }

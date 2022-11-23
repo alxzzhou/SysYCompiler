@@ -10,6 +10,11 @@ import java.io.IOException;
 public class Call extends Quadruple {
     String name;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("CALL " + name);
+    }
+
     public Call(String name) {
         super(AssemblyType.FUNC_CALL);
         this.name = name;

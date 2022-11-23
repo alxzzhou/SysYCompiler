@@ -11,20 +11,30 @@ import static statics.io.OutputHandler.IOConfig.PARSER;
 import static statics.io.OutputHandler.IOConfig.TOKEN;
 
 public class OutputHandler {
-    public static final IOConfig CONFIG = IOConfig.ERROR;
+    public static final IOConfig CONFIG = IOConfig.MIPS;
     public static final boolean PRINT_TOKEN = CONFIG == TOKEN;
     public static final boolean PRINT_PARSER = CONFIG == PARSER;
     public static final boolean PRINT_ERROR = CONFIG == IOConfig.ERROR;
     public static final boolean PRINT_MIPS = CONFIG == IOConfig.MIPS;
+    public static final boolean PRINT_IR = CONFIG == IOConfig.IR;
     public static final boolean DEBUG = false;
     private static final OutputHandler INSTANCE;
     private static final BufferedWriter OUTPUT;
     private static final BufferedWriter MIPS;
     private static final BufferedWriter ERROR;
+    private static final BufferedWriter IR;
 
     static {
         try {
             INSTANCE = new OutputHandler();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    static {
+        try {
+            IR = new BufferedWriter(new FileWriter("ir.txt"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -70,6 +80,10 @@ public class OutputHandler {
             MIPS.write(s + "");
             MIPS.flush();
         }
+        if (PRINT_IR) {
+            IR.write(s + "");
+            IR.flush();
+        }
     }
 
     public void writeln(String s) throws IOException {
@@ -80,6 +94,10 @@ public class OutputHandler {
         if (PRINT_MIPS && (s.isEmpty() || s.charAt(0) != '<')) {
             MIPS.write(s + "\n");
             MIPS.flush();
+        }
+        if (PRINT_IR && (s.isEmpty() || s.charAt(0) != '<')) {
+            IR.write(s + " \n");
+            IR.flush();
         }
     }
 
@@ -104,6 +122,6 @@ public class OutputHandler {
     }
 
     public enum IOConfig {
-        MIPS, ERROR, TOKEN, PARSER
+        MIPS, ERROR, TOKEN, PARSER, IR
     }
 }

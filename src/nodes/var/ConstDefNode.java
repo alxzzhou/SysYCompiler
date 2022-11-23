@@ -2,6 +2,7 @@ package nodes.var;
 
 import cfg.quad.func.Assign;
 import cfg.quad.mem.NP;
+import cfg.quad.mem.SW;
 import nodes.Node;
 import nodes.statement.TokenNode;
 import statics.assembly.AssemblyInfo;
@@ -59,6 +60,12 @@ public class ConstDefNode extends Node {
                 s *= i;
             }
             CFG_BUILDER.insert(new NP(p, s));
+            if (!init.isEmpty()) {
+                for (int j = 0; j < s; j++) {
+                    String ofs = String.valueOf(j);
+                    CFG_BUILDER.insert(new SW(init.get(j), p, ofs));
+                }
+            }
         } else {
             String v = genIRVar(name, id);
             CFG_BUILDER.insert(new Assign(v, init.isEmpty() ? "0" : init.get(0)));

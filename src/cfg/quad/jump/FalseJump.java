@@ -17,6 +17,11 @@ public class FalseJump extends Quadruple {
     public BasicBlock bb;
     String val;
 
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("IF " + val +" IS FALSE, JUMP TO "+bb.tag);
+    }
+
     public FalseJump(BasicBlock bb, String val) {
         super(AssemblyType.JUMP_FALSE);
         this.bb = bb;
