@@ -17,6 +17,6 @@ public class ErrorNode extends Node {
 
     @Override
     public void check(ExcCheckInfo info, ExcCheckRes res) {
-        errors.add(new CompException(errType,line));
+        errors.add(new CompException(errType, line));
     }
 }

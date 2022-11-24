@@ -6,23 +6,17 @@ import statics.io.OutputHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static statics.assembly.AssemblyType.CREATE_POINTER;
 
 public class Function {
+    final HashMap<String, Integer>
+            v2m = new HashMap<>(),
+            a2m = new HashMap<>();
     public int addr = 0;
-    Map<String, Quadruple> define;
-    Map<String, Set<Quadruple>> use;
     String tag;
     BasicBlock head, tail;
-    final HashMap<String, Integer>
-            v2r = new HashMap<>(),
-            v2m = new HashMap<>(),
-            a2m = new HashMap<>(),
-            varWt = new HashMap<>();
     HashMap<Integer, Integer> r2m = new HashMap<>();
     int paramNum;
 
@@ -40,7 +34,7 @@ public class Function {
 
     public void assemble() throws IOException {
         for (BasicBlock b = head; b != null; b = b.next) {
-            b.aliasify(v2r, v2m, a2m);
+            b.aliasify(v2m, a2m);
         }
         // TODO:
         OutputHandler.getInstance().writeln(tag + ":");
@@ -56,15 +50,10 @@ public class Function {
     }
 
     public void ralloc() {
-        calcOutVar();
-        calcVarWt();
-        if (Optimize.OPTIMAL) {
-            // TODO: head.ralloc
-        }
         for (BasicBlock b = head; b != null; b = b.next) {
             for (Quadruple q = b.head; q != null; q = q.next) {
                 String d = q.getDefine();
-                if (d != null && !v2r.containsKey(d)) {
+                if (d != null) {
                     if (q.type == CREATE_POINTER) {
                         a2m.put(d, addr);
                         addr += ((NP) q).s * 4;
@@ -75,34 +64,8 @@ public class Function {
                 }
             }
         }
-        for (Map.Entry<String, Integer> vr : v2r.entrySet()) {
-            if (!r2m.containsKey(vr.getValue())) {
-                r2m.put(vr.getValue(), addr);
-                addr += 4;
-            }
-        }
         r2m.put(31, addr);
         addr += 4;
-    }
-
-    public void calcVarWt() {
-        for (BasicBlock b = head; b != null; b = b.next) {
-            for (Quadruple q = b.head; q != null; q = q.next) {
-                String d = q.type == CREATE_POINTER ? null : q.getDefine();
-                if (d != null) {
-                    varWt.put(d, 1);
-                }
-            }
-        }
-    }
-
-    public void calcOutVar() {
-        for (BasicBlock b = head; b != null; b = b.next) {
-            for (Quadruple q = b.head; q != null; q = q.next) {
-                b.insertUse(q);
-                b.insertDef(q);
-            }
-        }
     }
 
     public void addBasicBlock(BasicBlock b) {
@@ -112,24 +75,6 @@ public class Function {
             tail.next = b;
             b.prev = tail;
             tail = b;
-        }
-    }
-
-    public void addDef(Quadruple q) {
-        String n = q.getDefine();
-        if (n == null) {
-            return;
-        }
-        define.put(n, q);
-    }
-
-    public void addUse(Quadruple q) {
-        Set<String> use = q.getUse();
-        for (String u : use) {
-            if (!this.use.containsKey(u)) {
-                this.use.put(u, new HashSet<>());
-            }
-            this.use.get(u).add(q);
         }
     }
 

@@ -17,15 +17,15 @@ public class TrueJump extends Quadruple {
     public BasicBlock bb;
     String val;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("IF " + val +" IS TRUE, JUMP TO "+bb.tag);
-    }
-
     public TrueJump(BasicBlock b, String v) {
         super(AssemblyType.JUMP_TRUE);
         this.bb = b;
         this.val = v;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("IF " + val + " IS TRUE, JUMP TO " + bb.tag);
     }
 
     @Override

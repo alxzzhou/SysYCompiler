@@ -14,7 +14,10 @@ public class Compiler {
         Parser parser = new Parser((new Tokens(lexer.tokens)));
         parser.compileUnit();
         nodes.Node root = parser.getBuilder().getRoot();
-        //root.check(new ExcCheckInfo(), new ExcCheckRes());
+//        root.check(new ExcCheckInfo(), new ExcCheckRes());
+//        for (CompException ce : errors) {
+//            OutputHandler.getInstance().writeln(ce);
+//        }
         root.assemble(new AssemblyInfo(), new AssemblyRes());
     }
 }

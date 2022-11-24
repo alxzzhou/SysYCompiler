@@ -13,15 +13,15 @@ public class LoadFuncParam extends Quadruple {
     String s;
     int n;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("LOAD_PARAM " + s + " <- PARAM_" + n);
-    }
-
     public LoadFuncParam(String s, int n) {
         super(AssemblyType.LOAD_PARAM);
         this.s = s;
         this.n = n;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("LOAD_PARAM " + s + " <- PARAM_" + n);
     }
 
     public String getDefine() {

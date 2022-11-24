@@ -15,15 +15,15 @@ public class PushParam extends Quadruple {
     String param;
     int n;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("PUSH_PARAM " + param + " -> PARAM_" + n);
-    }
-
     public PushParam(String param, int n) {
         super(AssemblyType.PUSH_PARAM);
         this.param = param;
         this.n = n;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("PUSH_PARAM " + param + " -> PARAM_" + n);
     }
 
     @Override

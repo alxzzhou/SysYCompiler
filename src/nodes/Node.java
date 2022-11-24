@@ -27,7 +27,7 @@ public abstract class Node {
         children = new LinkedList<>();
     }
 
-    public void shortCircuitOR(AssemblyInfo info,AssemblyRes res) throws IOException {
+    public void shortCircuitOR(AssemblyInfo info, AssemblyRes res) throws IOException {
         BasicBlock block = null;
         boolean fl = false;
         AssemblyRes r = new AssemblyRes();
@@ -61,7 +61,7 @@ public abstract class Node {
         }
     }
 
-    public void shortCircuitAND(AssemblyInfo info,AssemblyRes res) throws IOException {
+    public void shortCircuitAND(AssemblyInfo info, AssemblyRes res) throws IOException {
         BasicBlock block = null;
         boolean fl = false;
         AssemblyRes r = new AssemblyRes();

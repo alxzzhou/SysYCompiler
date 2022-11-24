@@ -15,16 +15,16 @@ import static cfg.quad.QuadUtil.isReg;
 public class LP extends Quadruple {
     String target, addr, ofs;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("LOAD_POINTER " + target + " <- " + addr + "(" + ofs + ")");
-    }
-
     public LP(String target, String addr, String ofs) {
         super(AssemblyType.LOAD_ADDRESS);
         this.target = target;
         this.addr = addr;
         this.ofs = ofs;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("LOAD_POINTER " + target + " <- " + addr + "(" + ofs + ")");
     }
 
     @Override

@@ -15,16 +15,16 @@ import static statics.assembly.AssemblyType.LT_LOGIC;
 public class LSS extends Quadruple {
     String target, v1, v2;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln(target + " = " + v1 + " < " + v2);
-    }
-
     public LSS(String target, String v1, String v2) {
         super(LT_LOGIC);
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + v1 + " < " + v2);
     }
 
     @Override

@@ -14,15 +14,15 @@ import static statics.assembly.AssemblyType.SINGLETON;
 public class Singleton extends Quadruple {
     String target, val;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln(target + " = " + val);
-    }
-
     public Singleton(String target, String val) {
         super(SINGLETON);
         this.target = target;
         this.val = val;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln(target + " = " + val);
     }
 
     @Override

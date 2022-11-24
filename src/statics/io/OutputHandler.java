@@ -60,7 +60,7 @@ public class OutputHandler {
         }
     }
 
-    private OutputHandler()  {
+    private OutputHandler() {
     }
 
     public static OutputHandler getInstance() {
@@ -111,7 +111,7 @@ public class OutputHandler {
         }
     }
 
-    public void debug(String s)  {
+    public void debug(String s) {
         if (DEBUG) {
             System.out.println(s);
         }

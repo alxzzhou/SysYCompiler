@@ -11,14 +11,14 @@ import java.io.IOException;
 public class UnconditionalJump extends Quadruple {
     public BasicBlock b;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("JUMP TO " + b.tag);
-    }
-
     public UnconditionalJump(BasicBlock block) {
         super(AssemblyType.JUMP);
         this.b = block;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("JUMP TO " + b.tag);
     }
 
     @Override

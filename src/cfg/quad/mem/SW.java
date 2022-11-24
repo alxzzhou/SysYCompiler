@@ -15,16 +15,16 @@ import static cfg.quad.QuadUtil.isReg;
 public class SW extends Quadruple {
     String offset, integer, pointer;
 
-    @Override
-    public void print() throws IOException {
-        OutputHandler.getInstance().writeln("SAVE_WORD " + integer + " -> " + pointer + "(" + offset + ")");
-    }
-
     public SW(String i, String pointer, String offset) {
         super(AssemblyType.SW);
         this.integer = i;
         this.offset = offset;
         this.pointer = pointer;
+    }
+
+    @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("SAVE_WORD " + integer + " -> " + pointer + "(" + offset + ")");
     }
 
     public Set<String> getUse() {
