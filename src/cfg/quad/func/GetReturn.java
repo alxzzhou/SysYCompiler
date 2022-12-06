@@ -18,6 +18,11 @@ public class GetReturn extends Quadruple {
     }
 
     @Override
+    public void print() throws IOException {
+        OutputHandler.getInstance().writeln("GET_RETURN " + target);
+    }
+
+    @Override
     public void assemble(Function f) throws IOException {
         if (isReg(target)) {
             OutputHandler.getInstance().writeln("move " + target + ", $v0");

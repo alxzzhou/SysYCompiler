@@ -22,6 +22,18 @@ public class LW extends Quadruple {
         this.ofs = ofs;
     }
 
+    public String getInteger() {
+        return target;
+    }
+
+    @Override
+    public String getMemory() {
+        if (addr.charAt(0) == 's') {
+            return null;
+        }
+        return (addr);
+    }
+
     @Override
     public void print() throws IOException {
         OutputHandler.getInstance().writeln("LOAD_WORD " + target + " <- " + addr + "(" + ofs + ")");
@@ -47,7 +59,7 @@ public class LW extends Quadruple {
             }
         }
         if (isNumberFormat(ofs)) {
-            ofs = String.valueOf(Integer.parseInt(ofs));
+            ofs = String.valueOf(Integer.parseInt(ofs) * 4);
         } else {
             if (!isReg(ofs)) {
                 OutputHandler.getInstance().writeln("lw $28, " + ofs.substring(2) + "($sp)");

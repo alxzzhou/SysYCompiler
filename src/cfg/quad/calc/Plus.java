@@ -7,7 +7,9 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static cfg.quad.QuadUtil.isNumberFormat;
@@ -21,6 +23,14 @@ public class Plus extends Quadruple {
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public List<String> getCalcSequence() {
+        return new ArrayList<String>() {{
+            add(v1);
+            add(v2);
+        }};
     }
 
     @Override

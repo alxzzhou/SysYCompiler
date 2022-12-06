@@ -23,8 +23,41 @@ public class CFGBuilder {
         }
     }
 
-    public void ralloc() {
-        funcs.forEach(Function::ralloc);
+    public void peepHoleOptimize() {
+        for (Function function : funcs) {
+            function.peepHoleOptimize();
+        }
+    }
+
+    public void activityAnalysis() {
+        for (Function f : funcs) {
+            f.activityAnalysis();
+        }
+    }
+
+    public void updateDefine() {
+        for (Function f : funcs) {
+            f.updateDefine();
+        }
+    }
+
+    public void updateUse() {
+        for (Function f : funcs) {
+            f.updateUse();
+        }
+    }
+
+
+    public void updatePredBlocks() {
+        for (Function f : funcs) {
+            f.updatePredBlocks();
+        }
+    }
+
+    public void eliminateDeadCode() {
+        for (Function f:funcs) {
+            f.eliminateDeadCode();
+        }
     }
 
     public void insert(Quadruple q) {
@@ -40,6 +73,7 @@ public class CFGBuilder {
 
     public void assemble() throws IOException {
         for (Function f : funcs) {
+            f.ralloc();
             f.assemble();
         }
     }
@@ -56,6 +90,6 @@ public class CFGBuilder {
 
     public String tempVar() {
         temp++;
-        return "temp_" + temp;
+        return "__temp__" + temp;
     }
 }

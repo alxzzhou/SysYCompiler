@@ -1,5 +1,6 @@
 package nodes.statement;
 
+import cfg.CFGBuilder;
 import cfg.Optimize;
 import nodes.Node;
 import statics.assembly.AssemblyInfo;
@@ -23,12 +24,18 @@ public class CompUnitNode extends Node {
             node.assemble(info, res);
         }
         if (Optimize.OPTIMAL) {
-            // TODO: optimize
+            CFG_BUILDER.updatePredBlocks();
+            CFG_BUILDER.updateDefine();
+            CFG_BUILDER.updateUse();
+            CFG_BUILDER.activityAnalysis();
+            CFG_BUILDER.eliminateDeadCode();
+            CFG_BUILDER.peepHoleOptimize();
         }
         if (OutputHandler.CONFIG == OutputHandler.IOConfig.IR) {
+            OutputHandler.getInstance().writeln("GLOBAL VAR:");
+            SYMBOL.printGlobalVars();
             CFG_BUILDER.print();
         } else {
-            CFG_BUILDER.ralloc();
             OutputHandler.getInstance().writeln(".data");
             SYMBOL.printGlobalVars();
             OutputHandler.getInstance().writeln(

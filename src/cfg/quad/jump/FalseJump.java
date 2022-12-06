@@ -24,6 +24,16 @@ public class FalseJump extends Quadruple {
     }
 
     @Override
+    public void changeNextBlock(BasicBlock b) {
+        bb = b;
+    }
+
+    @Override
+    public BasicBlock getJumpBlock() {
+        return bb;
+    }
+
+    @Override
     public void print() throws IOException {
         OutputHandler.getInstance().writeln("IF " + val + " IS FALSE, JUMP TO " + bb.tag);
     }

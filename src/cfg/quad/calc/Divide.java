@@ -6,7 +6,9 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static cfg.quad.QuadUtil.isNumberFormat;
@@ -17,10 +19,18 @@ public class Divide extends Quadruple {
     String target, v1, v2;
 
     public Divide(String target, String v1, String v2) {
-        super(AssemblyType.PLUS_ARITH);
+        super(AssemblyType.DIV_ARITH);
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public List<String> getCalcSequence() {
+        return new ArrayList<String>() {{
+            add(v1);
+            add(v2);
+        }};
     }
 
     @Override
@@ -61,9 +71,7 @@ public class Divide extends Quadruple {
 
     @Override
     public void assemble(Function f) throws IOException {
-        boolean fl = false;
         if (isNumberFormat(v1)) {
-            fl = true;
             OutputHandler.getInstance()
                     .writeln("li $27, " + v1);
             v1 = "$27";
@@ -86,17 +94,7 @@ public class Divide extends Quadruple {
                 }
                 return;
             }
-            if (fl) {
-                int i1 = Integer.parseInt(v1);
-                if (isReg(target)) {
-                    OutputHandler.getInstance().writeln("li " + target + ", " + (i1 / i2));
-                } else {
-                    OutputHandler.getInstance().writeln("li $28, " + (i1 / i2));
-                    OutputHandler.getInstance()
-                            .writeln("sw $28, " + target.substring(2) + "($sp)");
-                }
-                return;
-            } else if (isPowerOf2(i2)) {
+            if (isPowerOf2(i2)) {
                 i2 = (int) (Math.log(i2) / Math.log(2));
                 if (isReg(target)) {
                     OutputHandler.getInstance().writeln("sra " + target + ", " + v1 + ", " + i2);

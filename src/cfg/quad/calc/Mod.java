@@ -6,7 +6,9 @@ import statics.assembly.AssemblyType;
 import statics.io.OutputHandler;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import static cfg.quad.QuadUtil.isNumberFormat;
@@ -20,6 +22,14 @@ public class Mod extends Quadruple {
         this.target = target;
         this.v1 = v1;
         this.v2 = v2;
+    }
+
+    @Override
+    public List<String> getCalcSequence() {
+        return new ArrayList<String>() {{
+            add(v1);
+            add(v2);
+        }};
     }
 
     @Override
@@ -60,9 +70,7 @@ public class Mod extends Quadruple {
 
     @Override
     public void assemble(Function f) throws IOException {
-        boolean fl = false;
         if (isNumberFormat(v1)) {
-            fl = true;
             OutputHandler.getInstance()
                     .writeln("li $27, " + v1);
             v1 = "$27";
@@ -74,17 +82,6 @@ public class Mod extends Quadruple {
 
         if (isNumberFormat(v2)) {
             int i2 = Integer.parseInt(v2);
-            if (fl) {
-                int i1 = Integer.parseInt(v1);
-                if (isReg(target)) {
-                    OutputHandler.getInstance().writeln("li " + target + ", " + (i1 % i2));
-                } else {
-                    OutputHandler.getInstance().writeln("li $28, " + (i1 % i2));
-                    OutputHandler.getInstance()
-                            .writeln("sw $28, " + target.substring(2) + "($sp)");
-                }
-                return;
-            }
             OutputHandler.getInstance().writeln("li $28, " + v2);
             v2 = "$28";
         } else if (!isReg(v2)) {

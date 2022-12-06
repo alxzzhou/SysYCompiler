@@ -5,6 +5,7 @@ public enum AssemblyType {
     LOAD_ADDRESS,
     CREATE_POINTER,
     ASSIGN,
+    MOVE,
 
     NOT_LOGIC,
     NEGATE_ARITH,

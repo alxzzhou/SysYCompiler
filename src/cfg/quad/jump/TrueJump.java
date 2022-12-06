@@ -22,6 +22,15 @@ public class TrueJump extends Quadruple {
         this.bb = b;
         this.val = v;
     }
+    @Override
+    public void changeNextBlock(BasicBlock b) {
+        bb = b;
+    }
+
+    @Override
+    public BasicBlock getJumpBlock() {
+        return bb;
+    }
 
     @Override
     public void print() throws IOException {

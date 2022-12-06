@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-import static cfg.quad.QuadUtil.isDec;
+import static cfg.quad.QuadUtil.isNumberFormat;
 import static cfg.quad.QuadUtil.isReg;
 
 public class SW extends Quadruple {
@@ -20,6 +20,19 @@ public class SW extends Quadruple {
         this.integer = i;
         this.offset = offset;
         this.pointer = pointer;
+    }
+
+    @Override
+    public String getMemory() {
+        if (pointer.charAt(0) == 's') {
+            return null;
+        }
+        return (offset);
+    }
+
+    @Override
+    public String getInteger() {
+        return integer;
     }
 
     @Override
@@ -52,24 +65,23 @@ public class SW extends Quadruple {
         String os = null;
         switch (pointer.charAt(0)) {
             case 'v': {
-                os = "la $27, " + pointer;
+                OutputHandler.getInstance().writeln("la $27, " + pointer);
                 pointer = "$27";
                 break;
             }
             case 'a':// ARRAY
             {
-                os = "addi $27, $sp, " + pointer.substring(5);
+                OutputHandler.getInstance().writeln("addi $27, $sp, " + pointer.substring(5));
                 pointer = "$27";
                 break;
             }
             case 's': {
-                os = "lw $27, " + pointer.substring(2) + "($sp)";
+                OutputHandler.getInstance().writeln("lw $27, " + pointer.substring(2) + "($sp)");
                 pointer = "$27";
                 break;
             }
         }
-        OutputHandler.getInstance().writeln(os);
-        if (isDec(offset)) {
+        if (isNumberFormat(offset)) {
             offset = String.valueOf(Integer.parseInt(offset) * 4);
         } else {
             if (!isReg(offset)) {

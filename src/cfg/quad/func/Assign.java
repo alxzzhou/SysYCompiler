@@ -63,6 +63,10 @@ public class Assign extends Quadruple {
         }
     }
 
+    public String getInteger() {
+        return integer;
+    }
+
     public Set<String> getUse() {
         HashSet<String> r = new HashSet<>();
         r.add(integer);

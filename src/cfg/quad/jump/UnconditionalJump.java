@@ -17,6 +17,16 @@ public class UnconditionalJump extends Quadruple {
     }
 
     @Override
+    public void changeNextBlock(BasicBlock b) {
+        this.b = b;
+    }
+
+    @Override
+    public BasicBlock getJumpBlock() {
+        return b;
+    }
+
+    @Override
     public void print() throws IOException {
         OutputHandler.getInstance().writeln("JUMP TO " + b.tag);
     }

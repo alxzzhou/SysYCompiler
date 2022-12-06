@@ -6,7 +6,7 @@ import cfg.quad.calc.Minus;
 import cfg.quad.calc.Mod;
 import cfg.quad.calc.Multiply;
 import cfg.quad.calc.Plus;
-import cfg.quad.calc.Singleton;
+import cfg.quad.func.Assign;
 import cfg.quad.logic.EQ;
 import cfg.quad.logic.GEQ;
 import cfg.quad.logic.GRE;
@@ -36,7 +36,7 @@ public class OmniExpr extends Node {
                 val = r.res;
             } else {
                 val = CFG_BUILDER.tempVar();
-                CFG_BUILDER.insert(new Singleton(val, r.res));
+                CFG_BUILDER.insert(new Assign(val, r.res));
             }
         } else if (children.size() == 3) {
             if (children.get(1).type == SyntaxType.OR) {
